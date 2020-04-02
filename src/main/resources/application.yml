@@ -1,0 +1,57 @@
+spring:
+  # 404 交给异常处理器处理
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+  profiles:
+    active: dev
+  # HTTP ENCODING
+  http:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+  messages:
+    encoding: UTF-8
+  jmx:
+    enabled: true
+    default-domain: agentservice
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
+# Server settings
+server:
+  port: 8080
+  # HTTP请求和响应头的最大量，以字节为单位，默认值为4096字节,超过此长度的部分不予处理,一般8K。解决java.io.EOFException: null问题
+  max-http-header-size: 8192
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: text/plain,text/css,text/xml,text/javascript,application/json,application/javascript,application/xml,application/xml+rss,application/x-javascript,application/x-httpd-php,image/jpeg,image/gif,image/png
+  tomcat:
+    remote-ip-header: X-Forwarded-for
+    protocol-header: X-Forwarded-Proto
+    port-header: X-Forwarded-Port
+    uri-encoding: UTF-8
+    basedir: /var/tmp/website-app
+  servlet:
+    context-path: /
+mybatis-plus:
+  mapper-locations: classpath:com/company/project/persistence/xml/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+      #逻辑删除配置
+      logic-delete-field: deleted
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+  type-aliases-package: com.company.project.persistence.beans

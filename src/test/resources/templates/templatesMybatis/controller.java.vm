@@ -1,0 +1,107 @@
+package ${package.Controller};
+
+import io.swagger.annotations.*;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.company.project.framework.object.BaseVO;
+import com.company.project.util.ResultUtil;
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+import com.company.project.util.DataResult;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Api(tags = "${table.comment}")
+@Slf4j
+@RestController
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Autowired
+    private ${table.serviceName} i${entity}Service;
+
+#if(${restControllerStyle})
+
+    @PostMapping
+    public DataResult add(@RequestBody ${entity} entity) {
+        i${entity}Service.save(entity);
+        return DataResult.success();
+    }
+
+    @DeleteMapping("/{id}")
+    public DataResult delete(@PathVariable Long id) {
+        i${entity}Service.removeById(id);
+        return DataResult.success();
+    }
+
+    @PutMapping
+    public DataResult update(@RequestBody ${entity} entity) {
+        i${entity}Service.updateById(entity);
+        return DataResult.success();
+    }
+
+    @GetMapping("/{id}")
+    public DataResult detail(@PathVariable Long id) {
+        ${entity} entity=i${entity}Service.getById(id);
+        return DataResult.success(entity);
+    }
+
+    @GetMapping
+    public DataResult list(@RequestBody BaseVO vo) {
+        Page page=i${entity}Service.selectPage(vo);
+        return DataResult.success(ResultUtil.tablePage(page));
+    }
+
+#else
+
+    @PostMapping("/add")
+    public DataResult add(@RequestBody ${entity} entity) {
+        i${entity}Service.save(entity);
+        return DataResult.success();
+    }
+
+    @PostMapping("/delete")
+    public DataResult delete(@RequestParam Long id) {
+        i${entity}Service.removeById(id);
+        return DataResult.success();
+    }
+
+    @PostMapping("/update")
+    public DataResult update(@RequestBody ${entity} entity) {
+        i${entity}Service.updateById(entity);
+        return DataResult.success();
+    }
+
+    @PostMapping("/detail")
+    public DataResult detail(@PathVariable Long id) {
+    ${entity} entity=i${entity}Service.getById(id);
+        return DataResult.success(entity);
+    }
+
+    @PostMapping("/list")
+    public DataResult list(@RequestBody BaseVO vo) {
+        Page page=i${entity}Service.selectPage(vo);
+        return DataResult.success(ResultUtil.tablePage(page));
+    }
+
+#end
+
+}
