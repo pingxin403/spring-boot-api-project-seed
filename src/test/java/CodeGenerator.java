@@ -97,6 +97,7 @@ public class CodeGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
+        //RESTful
         strategy.setRestControllerStyle(true);
         strategy.setEntitySerialVersionUID(true);
         strategy.setEntityTableFieldAnnotationEnable(true);
