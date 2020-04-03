@@ -6,7 +6,7 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - Spring Boot 2.2.4
 - lombok
 - Mybatis+Mybatis plus
-- MySQL+Redis
+- MySQL+Redis 自定义缓存注解
 - FastJson
 
 

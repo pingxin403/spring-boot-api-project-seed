@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     @Value("${swagger2.enable}")
-    private boolean enable;
+    private boolean enable=true;
 
     @Bean
     public Docket createRestApi() {

@@ -1,4 +1,4 @@
-package com.company.project.framework.handler;
+package com.company.project.framework.holder;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
