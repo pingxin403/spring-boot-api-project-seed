@@ -3,6 +3,7 @@ package com.company.project.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.MessageDigest;
+import java.util.Random;
 
 /**
  * MD5加密工具类
@@ -47,5 +48,22 @@ public class Md5Util {
             log.error("MD5生成失败", e);
             return null;
         }
+    }
+
+    /**
+     * description 获取指定位数的随机数
+     *
+     * @param length 1
+     * @return java.lang.String
+     */
+    public static String getRandomString(int length) {
+        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
     }
 }

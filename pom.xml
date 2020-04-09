@@ -67,6 +67,13 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>5.0.7</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!--h2-->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -93,12 +100,6 @@
             <version>3.3.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.13</version>
-        </dependency>
-
         <!--阿里 FastJson依赖-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -109,7 +110,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.10</version>
+            <version>1.1.21</version>
         </dependency>
         <!--代码生成器依赖-->
         <dependency>
@@ -133,16 +134,38 @@
 
 
         <!--shiro-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.shiro</groupId>-->
+        <!--<artifactId>shiro-spring-boot-web-starter</artifactId>-->
+        <!--<version>1.4.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.shiro</groupId>-->
+        <!--<artifactId>shiro-spring-boot-starter</artifactId>-->
+        <!--<version>1.4.0</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring-boot-web-starter</artifactId>
+            <artifactId>shiro-spring</artifactId>
             <version>1.4.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring-boot-starter</artifactId>
+            <artifactId>shiro-web</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>2.4.2.1-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-cache</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
 
         <!-- 1. swagger-bootstrap-ui 目前改名为 knife4j -->
         <!-- 2. 实现 swagger-bootstrap-ui 的自动化配置  -->
@@ -167,6 +190,16 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+            <version>1.5.22</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.22</version>
+        </dependency>
         <!--log-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -179,6 +212,28 @@
             <version>1.2.3</version>
         </dependency>
 
+        <!--jwt-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>2.3.2</version>
+        </dependency>
 
     </dependencies>
 

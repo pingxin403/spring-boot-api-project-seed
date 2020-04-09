@@ -1,7 +1,7 @@
 ## 简介
 Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目，用于快速构建中小型API、RESTful API项目，该种子项目已经有过多个真实项目的实践，稳定、简单、快速，使我们摆脱那些重复劳动，专注于业务代码的编写，减少加班。下面是一个简单的使用演示，看如何基于本项目在短短几十秒钟内实现一套简单的API，并运行提供服务。
 
-### 技术介绍
+### 框架介绍
 
 - Spring Boot 2.2.4
 - lombok
@@ -20,6 +20,10 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - 使用FastJsonHttpMessageConverter，提高JSON序列化速度
 - 集成MyBatis、通用Mapper插件、PageHelper分页插件，实现单表业务零SQL
 - 提供代码生成器根据表名生成对应的Model、Mapper、MapperXML、Service、ServiceImpl、Controller等基础代码，其中Controller模板默认提供POST和RESTful两套，根据需求在```strategy.setRestControllerStyle(true)```方法中自己选择，默认使用POST模板。代码模板可根据实际项目的需求来扩展，由于每个公司业务都不太一样，所以只提供了一些比较基础、通用的模板，**主要是提供一个思路**来减少重复代码的编写，我在实际项目的使用中，其实根据公司业务的抽象编写了大量的模板。另外，使用模板也有助于保持团队代码风格的统一
+- 自定义enum转换器，数据库存储为int，controller返回为String
+- 自定义log注解，使用`com.company.project.business.annotation.BussinessLog`注解在controller方法，会自动生成http访问日志，如果选择save，则会保存道数据库
+- 自定义RedisCache注解，简化缓存配置
+- 简单的权限框架，基于shiro+JWT
 - 另有彩蛋，待你探索
 
 ## 快速开始

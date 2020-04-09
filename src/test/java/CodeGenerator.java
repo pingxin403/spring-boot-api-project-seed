@@ -4,9 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 import com.company.project.framework.object.AbstractDO;
+import com.company.project.framework.object.IService;
+import com.company.project.framework.object.ServiceImpl;
 import com.company.project.plugin.BaseMapper;
 
 import java.util.Scanner;
@@ -107,6 +108,9 @@ public class CodeGenerator {
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         strategy.setSuperEntityClass(AbstractDO.class);
         strategy.setSuperMapperClass(BaseMapper.class.getName());
+        strategy.setSuperServiceClass(IService.class.getName());
+        strategy.setSuperServiceImplClass(ServiceImpl.class.getName());
+
 
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id", "create_time", "modified_time", "delete");

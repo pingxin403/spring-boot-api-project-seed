@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class PageResult {
+public class PageResult<T> {
     /**
      * 总记录数
      */
@@ -37,10 +37,10 @@ public class PageResult {
     /**
      * 数据列表
      */
-    private List rows;
+    private List<T> rows;
 
 
-    public PageResult(Long total, List rows) {
+    public PageResult(Long total, List<T> rows) {
         this.total = total;
         this.rows = rows;
     }

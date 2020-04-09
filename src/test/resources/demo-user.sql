@@ -13,7 +13,7 @@ CREATE TABLE `tb_user`
   `sex`           int(1)            DEFAULT NULL,
   `register_date` datetime     NOT NULL,
   `create_time`   datetime     NULL DEFAULT NOW(),
-  `modified_time` datetime     NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP,
+  `update_time` datetime     NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP,
   `deleted`       int               default 1,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB

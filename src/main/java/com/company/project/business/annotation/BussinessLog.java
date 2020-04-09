@@ -3,10 +3,7 @@ package com.company.project.business.annotation;
 
 import com.company.project.business.enums.PlatformEnum;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 日志记录、自定义注解,位置controller的方法
@@ -18,11 +15,15 @@ import java.lang.annotation.Target;
  **/
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface BussinessLog {
     /**
      * 业务的名称
      */
     String value() default "";
+
+
+    String action() default "";
 
     /**
      * 平台，默认为后台管理

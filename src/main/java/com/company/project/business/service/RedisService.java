@@ -33,4 +33,5 @@ public interface RedisService {
     long getExpire(String key);
 
     Set<String> keySet(String keyPrefix);
+
 }

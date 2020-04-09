@@ -41,7 +41,11 @@ public class ResultUtil {
     }
 
     public static ResponseVO success(String message, Object data) {
-        return vo(BaseResponseCode.ERROR.getCode(), message, data);
+        return vo(BaseResponseCode.SUCCESS.getCode(), message, data);
+    }
+
+    public static ResponseVO success(Object data) {
+        return vo(BaseResponseCode.SUCCESS.getCode(), "ok", data);
     }
 
     public static ResponseVO success(String message) {

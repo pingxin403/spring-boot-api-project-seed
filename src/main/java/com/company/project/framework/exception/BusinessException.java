@@ -8,16 +8,16 @@ public class BusinessException extends RuntimeException {
     /**
      * 异常编号
      */
-    private final int messageCode;
+    private final int code;
 
     /**
      * 对messageCode 异常信息进行补充说明
      */
     private final String detailMessage;
 
-    public BusinessException(int messageCode, String message) {
+    public BusinessException(int code, String message) {
         super(message);
-        this.messageCode = messageCode;
+        this.code = code;
         this.detailMessage = message;
     }
     /**
@@ -28,8 +28,8 @@ public class BusinessException extends RuntimeException {
         this(code.getCode(), code.getMsg());
     }
 
-    public int getMessageCode() {
-        return messageCode;
+    public int getCode() {
+        return code;
     }
 
     public String getDetailMessage() {

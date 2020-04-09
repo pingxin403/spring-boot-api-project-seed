@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.persistence.mapper.SysRolePermissionMapper">
+    <resultMap id="BaseResultMap" type="com.company.project.persistence.beans.SysRolePermission">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+        <result column="permission_id" jdbcType="VARCHAR" property="permissionId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, role_id, permission_id, create_time
+    </sql>
+    <delete id="removeByRoleId">
+        DELETE
+        FROM sys_role_permission
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="getPermissionIdsByRoles" resultType="java.lang.Long">
+        SELECT permission_id
+        from sys_role_permission
+        where role_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <insert id="batchRolePermission" parameterType="com.company.project.persistence.beans.SysRolePermission">
+        INSERT INTO sys_role_permission (
+        id,
+        role_id,
+        permission_id,
+        create_time
+        )
+        VALUES
+        <foreach item="item" collection="list" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.roleId},
+            #{item.permissionId},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="removeByPermissionId">
+        DELETE
+        FROM sys_role_permission
+        WHERE permission_id = #{permissionId}
+    </delete>
+
+
+    <select id="getRoleIds" resultType="java.lang.Long">
+        select role_id
+        from sys_role_permission
+        where permission_id = #{permissionId}
+    </select>
+
+    <select id="getPermissionIdsByRoleId" resultType="java.lang.Long">
+        SELECT permission_id
+        from sys_role_permission
+        where role_id = #{roleId}
+    </select>
+
+    <select id="selectRoleRules" resultType="com.company.project.framework.shiro.rule.RolePermRule">
+        select CONCAT(pe.url, "==", UCASE(pe.method)) as url,
+               GROUP_CONCAT(ro.id ORDER BY pe.url)    as needRoles
+        from sys_permission pe
+                 left join sys_role_permission rp on pe.id = rp.permission_id
+                 left join sys_role ro on ro.id = rp.role_id
+        where pe.type = #{type}
+        group by pe.url, pe.id
+    </select>
+
+
+</mapper>

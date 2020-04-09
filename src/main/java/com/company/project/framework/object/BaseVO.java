@@ -1,5 +1,6 @@
 package com.company.project.framework.object;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -7,11 +8,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 
+/**
+ * 分页的VO
+ * @author hyp
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class BaseVO {
     public final static int DEFAULT_PAGE_SIZE = 10;
+    @ApiModelProperty(value = "第几页")
     private int pageNumber = 1;
+    @ApiModelProperty(value = "分页数量")
     private int pageSize = 0;
     private int pageStart = 0;
     private String orderField;

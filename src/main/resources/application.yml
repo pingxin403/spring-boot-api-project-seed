@@ -47,9 +47,11 @@ mybatis-plus:
   mapper-locations: classpath:com/company/project/persistence/xml/*.xml
   configuration:
     map-underscore-to-camel-case: true
+    default-enum-type-handler: com.company.project.framework.mybatis.CodeEnumTypeHandler
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
-      id-type: ASSIGN_ID
+      id-type: AUTO
       #逻辑删除配置
       logic-delete-field: deleted
       logic-delete-value: 0

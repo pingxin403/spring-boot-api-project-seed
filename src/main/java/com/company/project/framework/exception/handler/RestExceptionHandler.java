@@ -3,14 +3,16 @@ package com.company.project.framework.exception.handler;
 
 import com.company.project.framework.exception.BusinessException;
 import com.company.project.framework.exception.code.BaseResponseCode;
-import com.company.project.util.DataResult;
+import com.company.project.framework.object.ResponseVO;
+import com.company.project.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ import java.util.List;
  * controller 层全局异常统一处理类
  */
 @RestControllerAdvice
+@ResponseBody
 @Slf4j
 public class RestExceptionHandler {
 
@@ -25,27 +28,40 @@ public class RestExceptionHandler {
      * 系统繁忙，请稍候再试"
      */
     @ExceptionHandler(Exception.class)
-    public <T> DataResult<T> handleException(Exception e) {
+    public <T> ResponseVO<T> handleException(Exception e) {
         log.error("Exception,exception:{}", e);
-        return DataResult.getResult(BaseResponseCode.SYSTEM_BUSY);
+        return ResultUtil.error(BaseResponseCode.SYSTEM_BUSY);
     }
 
     /**
      * 自定义全局异常处理
      */
     @ExceptionHandler(value = BusinessException.class)
-    <T> DataResult<T> businessExceptionHandler(BusinessException e) {
+    public <T> ResponseVO<T> businessExceptionHandler(BusinessException e) {
         log.error("BusinessException,exception:{}", e);
-        return new DataResult<>(e.getMessageCode(), e.getDetailMessage());
+        return ResultUtil.error(e.getCode(), e.getDetailMessage());
+    }
+
+    /**
+     * 处理 MissingServletRequestParameterException 异常
+     * <p>
+     * SpringMVC 参数不正确
+     */
+    @ResponseBody
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public <T> ResponseVO<T> missingServletRequestParameterExceptionHandler(HttpServletRequest req, MissingServletRequestParameterException ex) {
+        log.error("[missingServletRequestParameterExceptionHandler]", ex);
+        // 包装 CommonResult 结果
+        return ResultUtil.error(BaseResponseCode.DATA_ERROR);
     }
 
     /**
      * 没有权限 返回403视图
      */
     @ExceptionHandler(value = AuthorizationException.class)
-    public <T> DataResult<T> erroPermission(AuthorizationException e) {
+    public <T> ResponseVO<T> erroPermission(AuthorizationException e) {
         log.error("BusinessException,exception:{}", e);
-        return new DataResult<>(BaseResponseCode.UNAUTHORIZED_ERROR);
+        return ResultUtil.error(BaseResponseCode.UNAUTHORIZED_ERROR);
 
     }
 
@@ -53,13 +69,14 @@ public class RestExceptionHandler {
      * 处理validation 框架异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    <T> DataResult<T> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+    <T> ResponseVO<T> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error("methodArgumentNotValidExceptionHandler bindingResult.allErrors():{},exception:{}", e.getBindingResult().getAllErrors(), e);
         List<ObjectError> errors = e.getBindingResult().getAllErrors();
         return createValidExceptionResp(errors);
     }
 
-    private <T> DataResult<T> createValidExceptionResp(List<ObjectError> errors) {
+
+    private <T> ResponseVO<T> createValidExceptionResp(List<ObjectError> errors) {
         String[] msgs = new String[errors.size()];
         int i = 0;
         for (ObjectError error : errors) {
@@ -67,7 +84,7 @@ public class RestExceptionHandler {
             log.info("msg={}", msgs[i]);
             i++;
         }
-        return DataResult.getResult(BaseResponseCode.METHODARGUMENTNOTVALIDEXCEPTION.getCode(), msgs[0]);
+        return ResultUtil.error(BaseResponseCode.METHODARGUMENTNOTVALIDEXCEPTION.getCode(), msgs[0]);
     }
 
 

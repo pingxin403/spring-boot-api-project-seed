@@ -2,6 +2,7 @@ package com.company.project.business.aspect;
 
 
 import com.company.project.business.annotation.RedisCache;
+import com.company.project.business.consts.CacheConst;
 import com.company.project.business.service.RedisService;
 import com.company.project.util.AspectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import java.lang.reflect.Method;
 @Component
 public class RedisCacheAspect {
 
-    private static final String BIZ_CACHE_PREFIX = "px_cache_";
+    private static final String CACHE_PREFIX = CacheConst.CACHE_PREFIX;
 
     @Autowired
     private RedisService redisService;
@@ -42,12 +43,12 @@ public class RedisCacheAspect {
         }
         boolean flush = cache.flush();
         if (flush) {
-            String classPrefix = AspectUtil.INSTANCE.getKey(point, BIZ_CACHE_PREFIX);
+            String classPrefix = AspectUtil.INSTANCE.getKey(point, CACHE_PREFIX);
             log.info("清空缓存 - {}*", classPrefix);
             redisService.delBatch(classPrefix);
             return point.proceed();
         }
-        String key = AspectUtil.INSTANCE.getKey(point, cache.key(), BIZ_CACHE_PREFIX);
+        String key = AspectUtil.INSTANCE.getKey(point, cache.key(), CACHE_PREFIX);
         boolean hasKey = redisService.hasKey(key);
         if (hasKey) {
             try {

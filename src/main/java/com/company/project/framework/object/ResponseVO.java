@@ -14,18 +14,18 @@ import java.util.Collection;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ResponseVO<T> {
-    private Integer status;
+    private Integer code;
     private String msg;
     private T data;
 
-    public ResponseVO(Integer status, String msg, T data) {
-        this.status = status;
+    public ResponseVO(Integer code, String msg, T data) {
+        this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public ResponseVO(BaseResponseCode status, T data) {
-        this(status.getCode(), status.getMsg(), data);
+    public ResponseVO(BaseResponseCode code, T data) {
+        this(code.getCode(), code.getMsg(), data);
     }
 
     public String toJson() {

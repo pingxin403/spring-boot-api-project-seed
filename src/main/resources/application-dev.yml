@@ -6,7 +6,7 @@ spring:
     #    driver-class-name: org.h2.Driver
     #    data: classpath:database/data.sql
     #    schema: classpath:database/schema.sql
-    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -59,9 +59,21 @@ spring:
 swagger2:
   enable: true
 
-
+#jwt
+jwt:
+  accessTokenExpireTime: PT2H
+  issuer: hanyunpeng0521.github.io
+  refreshTokenExpireAppTime: P30D
+  refreshTokenExpireTime: PT8H
+  secretKey: 78944878877848fg)
 ################################### 程序自定义配置 ###################################
 app:
+  # 是否启用kaptcha验证码
+  enableKaptcha: true
+  # 启用后，项目在启动时会打印数据库（Mysql和Redis）链接信息（包含密码）
+  # 代码请参考
+  enabledConfigLog: true
+  enableEncryptPassword: true
   druid:
     # druid访问用户名（默认：zyd-druid）
     username: px-druid
@@ -75,3 +87,5 @@ app:
     allowIps[0]:
     # 黑名单(非必填)， list
     denyIps[0]:
+
+

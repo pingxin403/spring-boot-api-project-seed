@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.persistence.mapper.SysUserRoleMapper">
+
+    <delete id="removeByRoleId">
+    DELETE
+    FROM
+    sys_user_role
+    WHERE
+    role_id = #{roleId}
+  </delete>
+
+
+    <select id="getRoleIdsByUserId" resultType="java.lang.Long">
+    SELECT role_id
+    from sys_user_role
+    where user_id =#{userId}
+  </select>
+
+    <delete id="removeByUserId">
+    delete
+    from sys_user_role
+    where user_id=#{userId}
+  </delete>
+
+    <select id="getInfoByUserIdByRoleId" resultType="java.lang.Long">
+    select user_id
+    from sys_user_role
+    where   role_id=#{roleId}
+  </select>
+
+
+    <select id="getUserIdsByRoleIds" resultType="java.lang.Long">
+        select user_id
+        from sys_user_role
+        where role_id in
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+    <insert id="batchUserRole" parameterType="com.company.project.persistence.beans.SysUserRole">
+        INSERT INTO sys_user_role (
+        id,
+        role_id,
+        user_id,
+        create_time
+        )
+        VALUES
+        <foreach item="item" collection="list" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.roleId},
+            #{item.userId},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+</mapper>
