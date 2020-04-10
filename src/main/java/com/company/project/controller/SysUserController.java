@@ -1,6 +1,7 @@
 package com.company.project.controller;
 
 
+import cn.hutool.core.lang.Assert;
 import com.company.project.business.annotation.BussinessLog;
 import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.service.ISysUserRoleService;
@@ -39,18 +40,23 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "更新用户信息")
     @RequiresPermissions("sys:user:update")
     public ResponseVO updateUserInfo(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
-        String operationId = JwtTokenUtil.getUserId(request.getHeader(JwtConstant.ACCESS_TOKEN));
-        userService.updateUserInfo(vo, operationId);
+        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
+        Assert.notBlank(jwt);
+        String id = JwtTokenUtil.getUserId(jwt);
+        userService.updateUserInfo(vo, id);
         return ResultUtil.success("更新用户信息");
     }
 
     @PutMapping("/info")
     @ApiOperation(value = "更新用户信息接口")
     @BussinessLog(value = "用户管理", action = "更新用户信息")
+    @RequiresPermissions("sys:user:update")
     public ResponseVO updateUserInfoById(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
-        String operationId = JwtTokenUtil.getUserId(request.getHeader(JwtConstant.ACCESS_TOKEN));
-        vo.setId(Long.valueOf(operationId));
-        userService.updateUserInfo(vo, operationId);
+        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
+        Assert.notBlank(jwt);
+        String id = JwtTokenUtil.getUserId(jwt);
+        vo.setId(Long.valueOf(id));
+        userService.updateUserInfo(vo, id);
         return ResultUtil.success("更新用户信息");
     }
 
@@ -65,8 +71,11 @@ public class SysUserController {
     @GetMapping("/")
     @ApiOperation(value = "查询用户详情接口")
     @BussinessLog(value = "用户管理", action = "查询用户详情")
+    @RequiresPermissions("sys:user:detail")
     public ResponseVO youSelfInfo(HttpServletRequest request) {
-        String id = JwtTokenUtil.getUserId(request.getHeader(JwtConstant.ACCESS_TOKEN));
+        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
+        Assert.notBlank(jwt);
+        String id = JwtTokenUtil.getUserId(jwt);
         return ResultUtil.success(userService.detailInfo(Long.parseLong(id)));
 
     }
@@ -93,8 +102,10 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "删除用户")
     @RequiresPermissions("sys:user:deleted")
     public ResponseVO deletedUser(@RequestBody @ApiParam(value = "用户id集合") List<Long> userIds, HttpServletRequest request) {
-        String operationId = JwtTokenUtil.getUserId(request.getHeader(JwtConstant.ACCESS_TOKEN));
-        userService.deletedUsers(userIds, operationId);
+        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
+        Assert.notBlank(jwt);
+        String id = JwtTokenUtil.getUserId(jwt);
+        userService.deletedUsers(userIds, id);
         return ResultUtil.success("删除用户");
     }
 

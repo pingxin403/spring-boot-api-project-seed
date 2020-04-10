@@ -6,11 +6,18 @@ import com.company.project.framework.exception.code.BaseResponseCode;
 import com.company.project.framework.object.ResponseVO;
 import com.company.project.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -19,8 +26,7 @@ import java.util.List;
  * @ClassName: RestExceptionHandler
  * controller 层全局异常统一处理类
  */
-@RestControllerAdvice
-@ResponseBody
+@RestControllerAdvice(basePackages = "com.company.project.controller")
 @Slf4j
 public class RestExceptionHandler {
 
@@ -40,6 +46,32 @@ public class RestExceptionHandler {
     public <T> ResponseVO<T> businessExceptionHandler(BusinessException e) {
         log.error("BusinessException,exception:{}", e);
         return ResultUtil.error(e.getCode(), e.getDetailMessage());
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public <T> ResponseVO<T> illegalArgumentExceptionHandler(IllegalArgumentException e)
+    {
+        log.error("IllegalArgumentException,exception:{}", e);
+        return ResultUtil.error(BaseResponseCode.DATA_ERROR);
+    }
+
+    @ExceptionHandler(value = NoHandlerFoundException.class)
+    public <T> ResponseVO<T> handleNoHandlerError(NoHandlerFoundException e) {
+        log.error("NoHandlerFoundException,exception:{}", e);
+        return ResultUtil.error(BaseResponseCode.NOT_FOUND);
+    }
+
+    /**
+     * Shiro权限认证异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = {UnauthorizedException.class, AccountException.class})
+    @ResponseBody
+    public ResponseVO unauthorizedExceptionHandle(Throwable e) {
+        e.printStackTrace(); // 打印异常栈
+        return ResultUtil.error(HttpStatus.UNAUTHORIZED.value(), e.getLocalizedMessage());
     }
 
     /**

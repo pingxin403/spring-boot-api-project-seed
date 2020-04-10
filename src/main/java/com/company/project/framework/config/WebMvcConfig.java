@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -24,11 +25,13 @@ import java.util.List;
  * Spring MVC 配置
  */
 @Configuration
+@EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(WebMvcConfig.class);
     @Value("${spring.profiles.active}")
-    private String env;//当前激活的配置文件
+    private String env;
+    //当前激活的配置文件
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -45,7 +48,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(SerializerFeature.WriteMapNullValue);//保留空的字段
+        config.setSerializerFeatures(SerializerFeature.WriteMapNullValue);
+        //保留空的字段
         //SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
         //SerializerFeature.WriteNullNumberAsZero//Number null -> 0
         // 按需配置，更多参考FastJson文档哈
@@ -58,16 +62,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         converters.add(converter);
     }
 
-
-    @Bean
-    public FilterRegistrationBean xssFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setDispatcherTypes(DispatcherType.REQUEST);
-        registration.setFilter(new XssFilter());
-        registration.addUrlPatterns("/*");
-        registration.setName("xssFilter");
-        registration.setOrder(Integer.MAX_VALUE);
-        return registration;
-    }
 
 }
