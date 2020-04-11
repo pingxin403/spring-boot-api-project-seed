@@ -1,0 +1,71 @@
+### 注册
+POST {{url}}/passport/register
+Accept: application/json
+Content-Type: application/json;charset=utf-8
+
+{
+  "createWhere": "web",
+  "email": "string",
+  "nickName": "string",
+  "pwd": "123456",
+  "phone": "string",
+  "realName": "string",
+  "sex": "男",
+  "username": "test"
+}
+
+### 验证码
+GET {{url}}/passport/code
+Accept: application/json
+Content-Type: application/json;charset=utf-8
+Cache-Control: no-cache
+
+
+> {%
+ client.global.set("captcha_code",response.headers.valueOf("captcha_code"));
+ %}
+
+### 登录
+POST {{url}}/passport/signin
+Accept: application/json
+Content-Type: application/json;charset=utf-8
+captcha_code: {{captcha_code}}
+
+{
+  "username": {{username}},
+  "password": {{password}},
+  "type": "pc",
+  "captcha": "np43"
+}
+
+> {%
+ client.global.set("accessToken",response.body.json.data.accessToken);
+  client.global.set("refreshToken",response.body.json.data.refreshToken);
+  client.global.set("app_id",response.body.json.data.id);
+
+  %}
+
+
+### 刷新token
+GET {{url}}/passport/token
+Accept: application/json
+Content-Type: application/json;charset=utf-8
+Cache-Control: no-cache
+authorization: {{accessToken}}
+refresh_token: {{refreshToken}}
+appId: {{app_id}}
+
+> {%
+ client.global.set("accessToken",response.body.json.data.accessToken);
+  %}
+
+###退出
+GET {{url}}/passport/logout
+Accept: application/json
+Content-Type: application/json;charset=utf-8
+Cache-Control: no-cache
+authorization: {{accessToken}}
+refresh_token: {{refreshToken}}
+appId: {{app_id}}
+
+

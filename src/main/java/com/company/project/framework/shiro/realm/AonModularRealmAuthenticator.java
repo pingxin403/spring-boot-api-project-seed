@@ -10,7 +10,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-
+//多Realm场景
 public class AonModularRealmAuthenticator extends ModularRealmAuthenticator {
 
     @Override

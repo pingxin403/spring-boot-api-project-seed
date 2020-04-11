@@ -4,9 +4,8 @@ import com.company.project.business.service.IShiroService;
 import com.company.project.business.service.ISysPermissionService;
 import com.company.project.business.service.ISysUserRoleService;
 import com.company.project.framework.holder.SpringContextHolder;
-import com.company.project.framework.shiro.provider.ShiroFilterRulesProvider;
 import com.company.project.framework.shiro.realm.JwtRealm;
-import com.company.project.framework.shiro.rule.RolePermRule;
+import com.company.project.persistence.beans.SysPermission;
 import com.company.project.persistence.beans.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -20,6 +19,7 @@ import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,9 +40,6 @@ public class ShiroServiceImpl implements IShiroService {
     @Autowired
     private ISysUserRoleService userRoleService;
 
-    @Autowired
-    private ShiroFilterRulesProvider shiroFilterRulesProvider;
-
     /**
      * 初始化权限
      */
@@ -58,7 +55,7 @@ public class ShiroServiceImpl implements IShiroService {
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChain.put("/passport/logout", "logout");
         // -------------auth 默认需要认证过滤器的URL 走auth--PasswordFilter
-        filterChain.put("/passport/signin", "captcha,auth");
+        filterChain.put("/passport/signin", "anon");
         filterChain.put("/passport/pwd", "user");
         filterChain.put("/passport/**", "anon");
 
@@ -76,27 +73,15 @@ public class ShiroServiceImpl implements IShiroService {
         filterChain.put("/favicon.ico", "anon");
         filterChain.put("/captcha.jpg", "anon");
         filterChain.put("/csrf", "anon");
-        filterChain.put("/**", "anon");
+        filterChain.put("/**", "jwt,authc");
 
 
-//        // 加载数据库中配置的资源权限列表
-//        List<SysPermission> resourcesList = resourcesService.selectAll();
-//        for (SysPermission resources : resourcesList) {
-//            if (!StringUtils.isEmpty(resources.getUrl()) && !StringUtils.isEmpty(resources.getPerms())) {
-//                String permission = "perms[" + resources.getPerms() + "]";
-//                filterChain.put(resources.getUrl(), permission);
-//            }
-//        }
-        // -------------dynamic 动态URL
-        if (shiroFilterRulesProvider != null) {
-            List<RolePermRule> rolePermRules = this.shiroFilterRulesProvider.loadRolePermRules();
-            if (null != rolePermRules) {
-                rolePermRules.forEach(rule -> {
-                    StringBuilder chain = rule.toFilterChain();
-                    if (null != chain) {
-                        filterChain.putIfAbsent(rule.getUrl(), chain.toString());
-                    }
-                });
+        // 加载数据库中配置的资源权限列表
+        List<SysPermission> resourcesList = resourcesService.selectAll();
+        for (SysPermission resources : resourcesList) {
+            if (!StringUtils.isEmpty(resources.getUrl()) && !StringUtils.isEmpty(resources.getPerms())) {
+                String permission = "perms[" + resources.getPerms() + "]";
+                filterChain.put(resources.getUrl(), permission);
             }
         }
         return filterChain;

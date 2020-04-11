@@ -2,17 +2,17 @@ package com.company.project.framework.shiro.config;
 
 
 import com.company.project.business.service.IShiroService;
-import com.company.project.framework.shiro.cache.RedisCacheManager;
+import com.company.project.framework.property.JwtProperties;
 import com.company.project.framework.shiro.filter.ShiroFilterChainManager;
 import com.company.project.framework.shiro.filter.StatelessWebSubjectFactory;
-import com.company.project.framework.shiro.matcher.RetryLimitCredentialsMatcher;
 import com.company.project.framework.shiro.realm.AonModularRealmAuthenticator;
-import com.company.project.framework.shiro.realm.JwtRealm;
 import com.company.project.framework.shiro.realm.RealmManager;
+import com.company.project.util.JwtTokenUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,18 +35,28 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Autowired
+    private JwtProperties jwtProperties;
+
+    @Autowired
     private IShiroService shiroService;
 
 
     @Bean("shiroSecurityManager")
     public DefaultWebSecurityManager securityManager(RealmManager realmManager) {
 
+        //JwtTokenUtil
+        JwtTokenUtil.setTokenSettings(jwtProperties);
+
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
-        securityManager.setAuthenticator(new AonModularRealmAuthenticator());
+        List<Realm> realms = realmManager.initGetRealm();
 
+        AonModularRealmAuthenticator authenticator = new AonModularRealmAuthenticator();
+        authenticator.setRealms(realms);
 
-        securityManager.setRealms(realmManager.initGetRealm());
+        securityManager.setAuthenticator(authenticator);
+
+        securityManager.setRealms(realms);
 
 
         /*

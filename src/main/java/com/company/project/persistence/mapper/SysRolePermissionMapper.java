@@ -1,7 +1,6 @@
 package com.company.project.persistence.mapper;
 
 
-import com.company.project.framework.shiro.rule.RolePermRule;
 import com.company.project.persistence.beans.SysRolePermission;
 import com.company.project.plugin.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,7 +30,5 @@ public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
     List<Long> getRoleIds(Long permissionId);
 
     List<Long> getPermissionIdsByRoleId(Long roleId);
-
-    List<RolePermRule> selectRoleRules(@Param("type") Integer type) throws DataAccessException;
 
 }

@@ -1,6 +1,5 @@
 package com.company.project.persistence.mapper;
 
-import com.company.project.framework.shiro.rule.RolePermRule;
 import com.company.project.persistence.beans.SysPermission;
 import com.company.project.plugin.BaseMapper;
 
@@ -18,5 +17,4 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     List<SysPermission> selectChild(Long pid);
 
-    List<RolePermRule> selectRoleRules();
 }

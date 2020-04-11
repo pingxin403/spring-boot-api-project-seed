@@ -7,6 +7,7 @@ import com.company.project.framework.property.JwtProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +29,7 @@ public class JwtTokenUtil {
     private static Duration refreshTokenExpireAppTime;
     private static String issuer;
 
-    public static void setTokenSettings(JwtProperties jwtProperties) {
+    public static void setTokenSettings(@Autowired JwtProperties jwtProperties) {
         secretKey = jwtProperties.getSecretKey();
         accessTokenExpireTime = jwtProperties.getAccessTokenExpireTime();
         refreshTokenExpireTime = jwtProperties.getRefreshTokenExpireTime();

@@ -8,8 +8,6 @@ package com.company.project.business.consts;
  **/
 public class JwtConstant {
 
-    public static final String STR_EXPIRED = "expiredJwt";
-
     public static final String APP_ID = "appId";
     /**
      * 正常token
@@ -86,11 +84,11 @@ public class JwtConstant {
     public static final String IDENTIFY_CACHE_KEY = "shiro-cache:com.company.project.framework.config.shiro.realm.JwtRealm.authorizationCache:";
 
     public static final String KAPTCHA_CACHE_KEY = "kaptcha-cache-key_";
-    public static final String CAPTCHA_PARAM = "CaptchaCode";
+    public static final String CAPTCHA_PARAM = "captcha_code";
 
     public static final String TOKEN_KEY = "token_key_";
 
     public static final String DEVICE_INFO = "deviceInfo";
 
-    public static final String ERR_JWT="errJwt";
+    public static final String ERR_JWT = "errJwt";
 }

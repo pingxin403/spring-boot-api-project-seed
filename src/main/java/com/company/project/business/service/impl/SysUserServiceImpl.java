@@ -16,6 +16,7 @@ import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.beans.SysUser;
 import com.company.project.persistence.mapper.SysUserMapper;
+import com.company.project.util.CaptchaUtil;
 import com.company.project.util.JwtTokenUtil;
 import com.company.project.util.PasswordUtil;
 import com.company.project.util.ResultUtil;
@@ -76,6 +77,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public LoginRespVO login(LoginReqVO vo) {
+        if (!CaptchaUtil.matchs(redisService,vo.getCaptcha())) {
+            throw new BusinessException(BaseResponseCode.INVALID_AUTHCODE);
+        }
         SysUser sysUser = sysUserMapper.getUserInfoByName(vo.getUsername());
         if (null == sysUser) {
             throw new BusinessException(BaseResponseCode.NOT_ACCOUNT);
@@ -101,6 +105,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         respVO.setAccessToken(access_token);
         respVO.setRefreshToken(refresh_token);
+        ;
         return respVO;
     }
 
@@ -190,7 +195,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         return sysUserMapper.selectById(userId);
     }
-
 
 
     @Override
@@ -316,7 +320,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String loadAccountRole(Long appId) {
-       return   sysUserMapper.selectUserRoles(appId);
+        return sysUserMapper.selectUserRoles(appId);
     }
 
 

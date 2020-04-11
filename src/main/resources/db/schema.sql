@@ -93,7 +93,7 @@ CREATE TABLE `sys_user`
   `id`           bigint(20)   NOT NULL COMMENT '用户id',
   `username`     varchar(50)  NOT NULL COMMENT '账户名称',
   `salt`         varchar(40) DEFAULT NULL COMMENT '加密盐值',
-  `password`     varchar(200) NOT NULL COMMENT '用户密码密文',
+  `pwd`     varchar(200) NOT NULL COMMENT '用户密码密文',
   `phone`        varchar(20) DEFAULT NULL COMMENT '手机号码',
   `real_name`    varchar(60) DEFAULT NULL COMMENT '真实名称',
   `nick_name`    varchar(60) DEFAULT NULL COMMENT '昵称',

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.company.project.persistence.mapper.SysRolePermissionMapper">
     <resultMap id="BaseResultMap" type="com.company.project.persistence.beans.SysRolePermission">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
-        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
-        <result column="permission_id" jdbcType="VARCHAR" property="permissionId"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="permission_id" jdbcType="BIGINT" property="permissionId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -60,16 +60,6 @@
         SELECT permission_id
         from sys_role_permission
         where role_id = #{roleId}
-    </select>
-
-    <select id="selectRoleRules" resultType="com.company.project.framework.shiro.rule.RolePermRule">
-        select CONCAT(pe.url, "==", UCASE(pe.method)) as url,
-               GROUP_CONCAT(ro.id ORDER BY pe.url)    as needRoles
-        from sys_permission pe
-                 left join sys_role_permission rp on pe.id = rp.permission_id
-                 left join sys_role ro on ro.id = rp.role_id
-        where pe.type = #{type}
-        group by pe.url, pe.id
     </select>
 
 

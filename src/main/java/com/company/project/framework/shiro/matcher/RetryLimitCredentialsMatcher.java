@@ -2,13 +2,9 @@ package com.company.project.framework.shiro.matcher;
 
 import com.company.project.business.consts.CacheConst;
 import com.company.project.business.service.ISysUserService;
-import com.company.project.framework.shiro.token.JwtToken;
-import com.company.project.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.PasswordMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -26,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Slf4j
 @Component
-public class RetryLimitCredentialsMatcher extends ShiroHashedCredentialsMatcher {
+public class RetryLimitCredentialsMatcher extends PasswordMatcher {
     /**
      * 用户登录次数计数   redisKey 前缀
      */
@@ -43,11 +39,8 @@ public class RetryLimitCredentialsMatcher extends ShiroHashedCredentialsMatcher 
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-        JwtToken jwtToken = (JwtToken) token;
-        String accessToken = (String) jwtToken.getPrincipal();
-        String userId = JwtTokenUtil.getUserId(accessToken);
-        String username = JwtTokenUtil.getUserName(accessToken);
-
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
+        String username = usernamePasswordToken.getUsername();
         // 访问一次，计数一次
         ValueOperations<String, Object> ops = redisTemplate.opsForValue();
         String loginCountKey = SHIRO_LOGIN_COUNT + username;

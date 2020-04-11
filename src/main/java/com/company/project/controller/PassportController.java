@@ -9,7 +9,6 @@ import com.company.project.business.vo.user.LoginReqVO;
 import com.company.project.business.vo.user.RegisterReqVO;
 import com.company.project.business.vo.user.UpdatePasswordReqVO;
 import com.company.project.framework.exception.code.BaseResponseCode;
-import com.company.project.framework.holder.RequestHolder;
 import com.company.project.framework.object.ResponseVO;
 import com.company.project.util.JwtTokenUtil;
 import com.company.project.util.ResultUtil;
@@ -17,9 +16,6 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,22 +52,7 @@ public class PassportController {
     @PostMapping("/signin")
     @ResponseBody
     public ResponseVO submitLogin(@RequestBody LoginReqVO vo) {
-        UsernamePasswordToken token = new UsernamePasswordToken(vo.getUsername(), vo.getPassword(), vo.getRememberMe());
-
-        RequestHolder.getRequest().setAttribute(JwtConstant.KAPTCHA_CACHE_KEY, vo.getKaptcha());
-        //获取当前的Subject
-        Subject currentUser = SecurityUtils.getSubject();
-        try {
-            // 在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查
-            // 每个Realm都能在必要时对提交的AuthenticationTokens作出反应
-            // 所以这一步在调用login(token)方法时,它会走到xxRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法
-            currentUser.login(token);
-            return ResultUtil.success("登录成功！");
-        } catch (Exception e) {
-            log.error("登录失败，用户名[{}]", vo.getUsername(), e);
-            token.clear();
-            return ResultUtil.error(e.getMessage());
-        }
+        return ResultUtil.success(userService.login(vo));
     }
 
     @PostMapping("/register")
@@ -86,7 +67,7 @@ public class PassportController {
     public ResponseVO refreshToken(HttpServletRequest request) {
         String refreshToken = request.getHeader(JwtConstant.REFRESH_TOKEN);
         String accessToken = request.getHeader(JwtConstant.ACCESS_TOKEN);
-        return ResultUtil.success(userService.refreshToken(refreshToken, accessToken));
+        return ResultUtil.success("ok", userService.refreshToken(refreshToken, accessToken));
     }
 
     @GetMapping("/unLogin")

@@ -18,7 +18,7 @@ public class LoginReqVO {
 
     @ApiModelProperty(value = "验证码")
     @NotBlank(message = "验证码不能为空")
-    private String kaptcha;
+    private String captcha;
 
     @ApiModelProperty(value = "记住我")
     private Boolean rememberMe = false;

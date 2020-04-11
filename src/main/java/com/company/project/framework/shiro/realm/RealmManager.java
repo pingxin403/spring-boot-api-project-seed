@@ -1,11 +1,10 @@
 package com.company.project.framework.shiro.realm;
 
 
-import com.company.project.framework.shiro.matcher.JwtMatcher;
+import com.company.project.business.service.ISysUserService;
+import com.company.project.framework.shiro.matcher.ShiroHashedCredentialsMatcher;
 import com.company.project.framework.shiro.matcher.RetryLimitCredentialsMatcher;
-import com.company.project.framework.shiro.provider.AccountProvider;
 import com.company.project.framework.shiro.token.JwtToken;
-import com.company.project.framework.shiro.token.PasswordToken;
 import org.apache.shiro.realm.Realm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,22 +22,16 @@ public class RealmManager {
     @Autowired
     private RetryLimitCredentialsMatcher limitCredentialsMatcher;
     @Autowired
-    private JwtMatcher jwtMatcher;
+    private ShiroHashedCredentialsMatcher shiroHashedCredentialsMatcher;
     @Autowired
-    private AccountProvider accountProvider;
+    private ISysUserService accountProvider;
 
 
     public List<Realm> initGetRealm() {
         List<Realm> realmList = new LinkedList<>();
-        // ----- password
-        PasswordRealm passwordRealm = new PasswordRealm();
-        passwordRealm.setAccountProvider(accountProvider);
-        passwordRealm.setCredentialsMatcher(limitCredentialsMatcher);
-        passwordRealm.setAuthenticationTokenClass(PasswordToken.class);
-        realmList.add(passwordRealm);
         // ----- jwt
         JwtRealm jwtRealm = new JwtRealm();
-        jwtRealm.setCredentialsMatcher(jwtMatcher);
+        jwtRealm.setCredentialsMatcher(shiroHashedCredentialsMatcher);
         jwtRealm.setAuthenticationTokenClass(JwtToken.class);
         realmList.add(jwtRealm);
         return Collections.unmodifiableList(realmList);

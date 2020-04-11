@@ -8,7 +8,7 @@ CREATE TABLE `tb_user`
 (
   `id`            int(11)      NOT NULL AUTO_INCREMENT,
   `username`      varchar(255) NOT NULL,
-  `password`      varchar(255) NOT NULL,
+  `pwd`      varchar(255) NOT NULL,
   `nick_name`     varchar(255)      DEFAULT NULL,
   `sex`           int(1)            DEFAULT NULL,
   `register_date` datetime     NOT NULL,

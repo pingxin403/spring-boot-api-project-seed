@@ -3,7 +3,6 @@ package com.company.project.framework.shiro.config;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
-import org.apache.shiro.web.filter.mgt.FilterChainResolver;
 import org.apache.shiro.web.mgt.WebSecurityManager;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.slf4j.Logger;
@@ -34,22 +33,16 @@ public class RestShiroFilterFactoryBean extends ShiroFilterFactoryBean {
             throw new BeanInitializationException(msg);
         } else {
             FilterChainManager manager = this.createFilterChainManager();
-            RestPathMatchingFilterChainResolver chainResolver = new RestPathMatchingFilterChainResolver();
-            chainResolver.setFilterChainManager(manager);
-            return new RestShiroFilterFactoryBean.SpringShiroFilter((WebSecurityManager) securityManager, chainResolver);
+            return new RestShiroFilterFactoryBean.SpringShiroFilter((WebSecurityManager) securityManager);
         }
     }
 
     private static final class SpringShiroFilter extends AbstractShiroFilter {
-        protected SpringShiroFilter(WebSecurityManager webSecurityManager, FilterChainResolver resolver) {
+        protected SpringShiroFilter(WebSecurityManager webSecurityManager) {
             if (webSecurityManager == null) {
                 throw new IllegalArgumentException("WebSecurityManager property cannot be null.");
             } else {
                 this.setSecurityManager(webSecurityManager);
-                if (resolver != null) {
-                    this.setFilterChainResolver(resolver);
-                }
-
             }
         }
     }

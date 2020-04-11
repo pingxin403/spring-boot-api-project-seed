@@ -3,26 +3,25 @@
 <mapper namespace="com.company.project.persistence.mapper.SysUserMapper">
 
     <resultMap id="BaseResultMap" type="com.company.project.persistence.beans.SysUser">
-        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="salt" jdbcType="VARCHAR" property="salt"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="dept_id" jdbcType="VARCHAR" property="deptId"/>
         <result column="real_name" jdbcType="VARCHAR" property="realName"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="sex" jdbcType="TINYINT" property="sex"/>
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
-        <result column="create_id" jdbcType="VARCHAR" property="createId"/>
-        <result column="update_id" jdbcType="VARCHAR" property="updateId"/>
+        <result column="create_id" jdbcType="BIGINT" property="createId"/>
+        <result column="update_id" jdbcType="BIGINT" property="updateId"/>
         <result column="create_where" jdbcType="TINYINT" property="createWhere"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, username, salt, `password`, phone, dept_id, real_name, nick_name, email, `status`,
+    id, username, salt, `password`, phone, real_name, nick_name, email, `status`,
     sex, deleted, create_id, update_id, create_where, create_time, update_time
   </sql>
 
