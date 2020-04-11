@@ -37,6 +37,6 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
         page=${table.entityPath}Mapper.selectPage(page,Wrappers.query(entity));
 
-        return ResultUtil.tablePage(pages);
+        return ResultUtil.tablePage(page);
     }
 }
