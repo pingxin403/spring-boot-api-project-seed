@@ -35,7 +35,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         ${entity} entity=new ${entity}();
         BeanUtils.copyProperties(vo, entity);
 
-        Page<${entity}> pages=${table.entityPath}Mapper.selectPage(page,Wrappers.query(entity));
+        page=${table.entityPath}Mapper.selectPage(page,Wrappers.query(entity));
 
         return ResultUtil.tablePage(pages);
     }
