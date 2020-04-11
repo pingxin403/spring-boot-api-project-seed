@@ -29,12 +29,14 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     private ${table.mapperName} ${table.entityPath}Mapper;
 
     @Override
-    public Page<${entity}> selectPage(BaseVO vo){
+    public PageResult<${entity}> selectPage(BaseVO vo){
         Page<${entity}> page = new Page<${entity}>(vo.getPageNumber(), vo.getPageSize());
 
         ${entity} entity=new ${entity}();
         BeanUtils.copyProperties(vo, entity);
 
-        return ${table.entityPath}Mapper.selectPage(page,Wrappers.query(entity));
+        Page<${entity}> pages=${table.entityPath}Mapper.selectPage(page,Wrappers.query(entity));
+
+        return ResultUtil.tablePage(pages);
     }
 }

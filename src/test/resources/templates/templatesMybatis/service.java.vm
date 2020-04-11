@@ -19,7 +19,7 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
      *  分页查询
      * @return
      */
-    Page<${entity}> selectPage(BaseVO vo);
+    PageResult<${entity}> selectPage(BaseVO vo);
 
 }
 

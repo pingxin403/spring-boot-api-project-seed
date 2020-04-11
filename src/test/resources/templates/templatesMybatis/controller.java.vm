@@ -34,66 +34,66 @@ public class ${table.controllerName} {
 
 #if(${restControllerStyle})
 
-    @PostMapping
-    public DataResult add(@RequestBody ${entity} entity) {
-        i${entity}Service.save(entity);
-        return DataResult.success();
+    @PostMapping("/")
+    @ApiOperation(value = "添加${table.comment}")
+    @BussinessLog(value = "添加${table.comment}", action = "添加")
+    public ResponseVO add(@RequestBody ${entity} entity) {
+        return ResultUtil.success(i${entity}Service.save(entity));
     }
 
     @DeleteMapping("/{id}")
-    public DataResult delete(@PathVariable Long id) {
-        i${entity}Service.removeById(id);
-        return DataResult.success();
+    @ApiOperation(value = "删除${table.comment}")
+    @BussinessLog(value = "删除${table.comment}", action = "删除")
+    public ResponseVO delete(@PathVariable Long id) {
+        return ResultUtil.success(i${entity}Service.removeById(id));
     }
 
-    @PutMapping
-    public DataResult update(@RequestBody ${entity} entity) {
-        i${entity}Service.updateById(entity);
-        return DataResult.success();
+    @PutMapping("/")
+    @ApiOperation(value = "更新${table.comment}")
+    @BussinessLog(value = "更新${table.comment}", action = "更新")
+    public ResponseVO update(@RequestBody ${entity} entity) {
+        return ResultUtil.success(i${entity}Service.updateById(entity));
     }
 
     @GetMapping("/{id}")
-    public DataResult detail(@PathVariable Long id) {
-        ${entity} entity=i${entity}Service.getById(id);
-        return DataResult.success(entity);
+    @ApiOperation(value = "获取${table.comment}详细信息")
+    @BussinessLog(value = "获取${table.comment}详细信息", action = "获取详细信息")
+    public ResponseVO detail(@PathVariable Long id) {
+        return ResultUtil.success(i${entity}Service.getById(id));
     }
 
-    @GetMapping
-    public DataResult list(@RequestBody BaseVO vo) {
-        Page page=i${entity}Service.selectPage(vo);
-        return DataResult.success(ResultUtil.tablePage(page));
+    @GetMapping("/")
+    @ApiOperation(value = "${table.comment}分页")
+    @BussinessLog(value = "${table.comment}分页", action = "分页")
+    public ResponseVO list(@RequestBody BaseVO vo) {
+        return ResultUtil.success(i${entity}Service.selectPage(vo));
     }
 
 #else
 
     @PostMapping("/add")
-    public DataResult add(@RequestBody ${entity} entity) {
-        i${entity}Service.save(entity);
-        return DataResult.success();
+    public ResponseVO add(@RequestBody ${entity} entity) {
+        return ResultUtil.success(i${entity}Service.save(entity));
     }
 
     @PostMapping("/delete")
-    public DataResult delete(@RequestParam Long id) {
-        i${entity}Service.removeById(id);
-        return DataResult.success();
+    public ResponseVO delete(@PathVariable Long id) {
+        return ResultUtil.success(i${entity}Service.removeById(id));
     }
 
     @PostMapping("/update")
-    public DataResult update(@RequestBody ${entity} entity) {
-        i${entity}Service.updateById(entity);
-        return DataResult.success();
+    public ResponseVO update(@RequestBody ${entity} entity) {
+        return ResultUtil.success(i${entity}Service.updateById(entity));
     }
 
     @PostMapping("/detail")
-    public DataResult detail(@PathVariable Long id) {
-    ${entity} entity=i${entity}Service.getById(id);
-        return DataResult.success(entity);
+    public ResponseVO detail(@PathVariable Long id) {
+        return ResultUtil.success(i${entity}Service.getById(id));
     }
 
     @PostMapping("/list")
-    public DataResult list(@RequestBody BaseVO vo) {
-        Page page=i${entity}Service.selectPage(vo);
-        return DataResult.success(ResultUtil.tablePage(page));
+    public ResponseVO list(@RequestBody BaseVO vo) {
+        return ResultUtil.success(i${entity}Service.selectPage(vo));
     }
 
 #end

@@ -172,11 +172,12 @@ values (1, 'admin', '324ce32d86224b00a02b', 'ac7e435db19997a46e3b390e69cb148b',
 INSERT INTO `sys_user_role`
 VALUES (1, 1, 1, '2020-04-10 12:03:10', '2020-04-10 12:03:10', 1);
 
-INSERT INTO `sys_config`(`id`, `config_key`, `config_value`, `create_time`, `update_time`)
+INSERT INTO `sys_config`(`id`, `key`, `value`, `create_time`, `update_time`)
 VALUES (3, 'domain', 'hanyunpeng0521.github.io', now(), now());
-INSERT INTO `sys_config`(`id`, `config_key`, `config_value`, `create_time`, `update_time`)
+INSERT INTO `sys_config`(`id`, `key`, `value`, `create_time`, `update_time`)
 VALUES (10, 'authorName', '平心', now(), now());
-INSERT INTO `sys_config`(`id`, `config_key`, `config_value`, `create_time`, `update_time`)
+INSERT INTO `sys_config`(`id`, `key`, `value`, `create_time`, `update_time`)
 VALUES (11, 'authorEmail', 'm13839441583#163.com', now(), now());
+
 
 
