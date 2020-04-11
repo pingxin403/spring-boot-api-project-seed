@@ -11,7 +11,7 @@
 
     <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
     <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/sf.log</file>
+        <file>logs/main.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/sf.%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
@@ -23,7 +23,7 @@
     <appender name="businessLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 按每小时滚动文件，如果一天内达到10M也会滚动文件, 滚动文件将会压缩成zip格式 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/sf-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+            <fileNamePattern>logs/main-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>

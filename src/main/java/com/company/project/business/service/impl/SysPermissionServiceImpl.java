@@ -323,7 +323,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             return list;
         }
         for (SysPermission sysPermission : all) {
-            if (sysPermission.getPid().equals("0")) {
+            if ("0".equals(sysPermission.getPid())) {
                 PermissionRespNode permissionRespNode = new PermissionRespNode();
                 BeanUtils.copyProperties(sysPermission, permissionRespNode);
                 permissionRespNode.setTitle(sysPermission.getName());
