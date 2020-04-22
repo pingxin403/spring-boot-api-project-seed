@@ -1,11 +1,9 @@
 package com.company.project.framework.shiro.cache;
 
 
-import com.alibaba.fastjson.JSON;
 import com.company.project.business.service.RedisService;
 import com.company.project.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 import org.springframework.util.CollectionUtils;
@@ -40,8 +38,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
             if (rawValue == null) {
                 return null;
             }
-            SimpleAuthorizationInfo simpleAuthenticationInfo = JSON.parseObject(rawValue.toString(), SimpleAuthorizationInfo.class);
-            V value = (V) simpleAuthenticationInfo;
+            V value = (V) rawValue;
             return value;
         } catch (Exception e) {
             throw new CacheException(e);
@@ -57,7 +54,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         }
         try {
             String redisCacheKey = getRedisCacheKey(key);
-            redisService.set(redisCacheKey, value != null ? value : null, expire, TimeUnit.MINUTES);
+            redisService.set(redisCacheKey, value, expire, TimeUnit.MINUTES);
             return value;
         } catch (Exception e) {
             throw new CacheException(e);
@@ -158,7 +155,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         for (String key : keys) {
             V value = null;
             try {
-                value = (V) redisService.get(key);
+                value = redisService.get(key);
             } catch (Exception e) {
                 log.error("deserialize values= error", e);
             }

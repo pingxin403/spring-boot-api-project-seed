@@ -1,10 +1,9 @@
 package com.company.project.framework.shiro.token;
 
 import com.company.project.business.consts.JwtConstant;
-import com.company.project.util.RequestUtil;
 import org.apache.shiro.authc.AuthenticationToken;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -39,9 +38,19 @@ public class JwtToken implements AuthenticationToken {
         this.appId = appId;
     }
 
+    public static JwtToken createJwtToken(HttpServletRequest request) {
+
+        String appId = request.getHeader(JwtConstant.APP_ID);
+        String ipHost = request.getRemoteAddr();
+        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
+        String deviceInfo = request.getHeader("deviceInfo");
+
+        return new JwtToken(ipHost, deviceInfo, jwt, appId);
+    }
+
     @Override
     public Object getPrincipal() {
-        return this.appId;
+        return this.token;
     }
 
     @Override
@@ -79,15 +88,5 @@ public class JwtToken implements AuthenticationToken {
 
     public void setAppId(String appId) {
         this.appId = appId;
-    }
-
-    public static JwtToken createJwtToken(ServletRequest request) {
-
-        String appId = RequestUtil.getHeader(JwtConstant.APP_ID);
-        String ipHost = request.getRemoteAddr();
-        String jwt = RequestUtil.getHeader(JwtConstant.ACCESS_TOKEN);
-        String deviceInfo = RequestUtil.getHeader("deviceInfo");
-
-        return new JwtToken(ipHost, deviceInfo, jwt, appId);
     }
 }

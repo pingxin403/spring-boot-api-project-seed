@@ -40,13 +40,13 @@ public class JwtFilter extends AccessControlFilter {
             System.out.println(subject.isAuthenticated() + "");
 
             System.out.println(HttpContextUtils.isAjaxRequest(request));
-            log.info(request.getMethod());
-            log.info(request.getRequestURL().toString());
+
             String token = request.getHeader(JwtConstant.ACCESS_TOKEN);
             if (StringUtils.isEmpty(token)) {
                 throw new BusinessException(BaseResponseCode.TOKEN_ERROR);
             }
-            JwtToken jwtPasswordToken = JwtToken.createJwtToken(servletRequest);
+
+            JwtToken jwtPasswordToken = JwtToken.createJwtToken(request);
             getSubject(servletRequest, servletResponse).login(jwtPasswordToken);
         } catch (BusinessException exception) {
             throw exception;

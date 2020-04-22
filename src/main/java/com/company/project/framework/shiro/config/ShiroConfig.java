@@ -1,18 +1,16 @@
 package com.company.project.framework.shiro.config;
 
-
 import com.company.project.business.service.IShiroService;
 import com.company.project.framework.property.JwtProperties;
+import com.company.project.framework.shiro.cache.RedisCacheManager;
 import com.company.project.framework.shiro.filter.ShiroFilterChainManager;
-import com.company.project.framework.shiro.filter.StatelessWebSubjectFactory;
-import com.company.project.framework.shiro.realm.AonModularRealmAuthenticator;
-import com.company.project.framework.shiro.realm.RealmManager;
+import com.company.project.framework.shiro.matcher.ShiroHashedCredentialsMatcher;
+import com.company.project.framework.shiro.realm.JwtRealm;
 import com.company.project.util.JwtTokenUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -20,10 +18,11 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,23 +39,34 @@ public class ShiroConfig {
     @Autowired
     private IShiroService shiroService;
 
+    @Bean
+    public ShiroHashedCredentialsMatcher customHashedCredentialsMatcher() {
+        return new ShiroHashedCredentialsMatcher();
+    }
+
+    @Bean
+    public JwtRealm customRealm(RedisCacheManager redisCacheManager) {
+        JwtRealm jwtRealm = new JwtRealm();
+        jwtRealm.setCredentialsMatcher(customHashedCredentialsMatcher());
+        jwtRealm.setCacheManager(redisCacheManager);
+        return jwtRealm;
+    }
+
+    @Bean
+    public RedisCacheManager redisCacheManager() {
+        return new RedisCacheManager();
+    }
 
     @Bean("shiroSecurityManager")
-    public DefaultWebSecurityManager securityManager(RealmManager realmManager) {
+    public DefaultWebSecurityManager securityManager(JwtRealm jwtRealm) {
 
         //JwtTokenUtil
         JwtTokenUtil.setTokenSettings(jwtProperties);
 
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
-        List<Realm> realms = realmManager.initGetRealm();
 
-        AonModularRealmAuthenticator authenticator = new AonModularRealmAuthenticator();
-        authenticator.setRealms(realms);
-
-        securityManager.setAuthenticator(authenticator);
-
-        securityManager.setRealms(realms);
+        securityManager.setRealm(jwtRealm);
 
 
         /*
@@ -73,8 +83,8 @@ public class ShiroConfig {
 
         securityManager.setSubjectDAO(subjectDAO);
 
-        StatelessWebSubjectFactory subjectFactory = new StatelessWebSubjectFactory();
-        securityManager.setSubjectFactory(subjectFactory);
+//        StatelessWebSubjectFactory subjectFactory = new StatelessWebSubjectFactory();
+//        securityManager.setSubjectFactory(subjectFactory);
 
 
         SecurityUtils.setSecurityManager(securityManager);
@@ -84,7 +94,7 @@ public class ShiroConfig {
 
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("shiroSecurityManager") SecurityManager securityManager, ShiroFilterChainManager filterChainManager) {
-        RestShiroFilterFactoryBean shiroFilterFactoryBean = new RestShiroFilterFactoryBean();
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         //自定义拦截器限制并发人数,参考博客：
@@ -116,5 +126,22 @@ public class ShiroConfig {
         DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setProxyTargetClass(true);
         return defaultAdvisorAutoProxyCreator;
+    }
+
+    /**
+     * SpringShiroFilter首先注册到spring容器
+     * 然后被包装成FilterRegistrationBean
+     * 最后通过FilterRegistrationBean注册到servlet容器
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean delegatingFilterProxy() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilter");
+        filterRegistrationBean.setFilter(proxy);
+        return filterRegistrationBean;
     }
 }

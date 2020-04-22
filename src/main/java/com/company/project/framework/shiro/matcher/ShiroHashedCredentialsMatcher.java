@@ -1,26 +1,18 @@
 package com.company.project.framework.shiro.matcher;
 
-
 import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.service.RedisService;
-import com.company.project.business.vo.user.JwtAccount;
 import com.company.project.framework.exception.BusinessException;
 import com.company.project.framework.exception.code.BaseResponseCode;
 import com.company.project.framework.shiro.token.JwtToken;
 import com.company.project.util.JwtTokenUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 
-@Component
 public class ShiroHashedCredentialsMatcher implements CredentialsMatcher {
 
     @Autowired

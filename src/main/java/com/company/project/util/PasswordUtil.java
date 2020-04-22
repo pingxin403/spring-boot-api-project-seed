@@ -62,4 +62,8 @@ public class PasswordUtil {
     public static String getSalt() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
     }
+
+    public static void main(String[] args) {
+        System.out.println(PasswordUtil.encode("666666", "324ce32d86224b00a02b"));
+    }
 }

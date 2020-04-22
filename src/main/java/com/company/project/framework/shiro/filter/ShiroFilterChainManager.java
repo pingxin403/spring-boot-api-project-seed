@@ -1,9 +1,6 @@
 package com.company.project.framework.shiro.filter;
 
 
-import com.company.project.business.service.ISysUserService;
-import com.company.project.business.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +13,6 @@ import java.util.Map;
  */
 @Component
 public class ShiroFilterChainManager {
-
-    @Autowired
-    private RedisService redisService;
-    @Autowired
-    private ISysUserService accountService;
 
     @Value("${app.enableEncryptPassword}")
     private boolean isEncryptPassword;
