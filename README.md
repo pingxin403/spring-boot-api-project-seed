@@ -9,6 +9,8 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - MySQL+Redis 自定义缓存注解
 - FastJson
 - shiro+Jwt
+- knife4j+swagger 2：Api文档
+  文档访问位置：http://x.x.x.x:8080/doc.html
 
 
 ## 特征&提供

@@ -64,8 +64,10 @@ public class ShiroServiceImpl implements IShiroService {
 
 
         //放开swagger-ui地址
+        filterChain.put("/*.html", "anon");
         filterChain.put("/swagger/**", "anon");
         filterChain.put("/v2/api-docs", "anon");
+        filterChain.put("/v2/api-docs-ext", "anon");
         filterChain.put("/swagger-ui.html", "anon");
         filterChain.put("/swagger-resources/**", "anon");
         filterChain.put("/webjars/**", "anon");

@@ -11,6 +11,8 @@ import com.company.project.persistence.beans.SysLog;
 import com.company.project.util.ResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,11 @@ public class SysLogController {
     @ApiOperation(value = "分页查询系统操作日志接口")
     @BussinessLog(value = "系统操作日志管理", action = "分页查询系统操作日志")
     @RequiresPermissions("sys:log:list")
+    @ApiResponses(
+            {
+                    @ApiResponse(code = 500, message = "服务器内部错误", response = ResponseVO.class)
+            }
+    )
     public ResponseVO pageInfo(@RequestBody LogVO vo) {
         PageResult<SysLog> sysLogPageVO = logService.findPageBreakByCondition(vo);
         return ResultUtil.success("ok", sysLogPageVO);

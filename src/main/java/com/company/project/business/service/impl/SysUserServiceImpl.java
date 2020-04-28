@@ -16,10 +16,7 @@ import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.beans.SysUser;
 import com.company.project.persistence.mapper.SysUserMapper;
-import com.company.project.util.CaptchaUtil;
-import com.company.project.util.JwtTokenUtil;
-import com.company.project.util.PasswordUtil;
-import com.company.project.util.ResultUtil;
+import com.company.project.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -62,8 +59,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Long register(RegisterReqVO vo) {
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(vo, sysUser);
+        SysUser sysUser = BeanConvertUtil.doConvert(vo,SysUser.class);
         sysUser.setSalt(PasswordUtil.getSalt());
         String encode = PasswordUtil.encode(vo.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);
@@ -90,8 +86,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!PasswordUtil.matches(sysUser.getSalt(), vo.getPassword(), sysUser.getPassword())) {
             throw new BusinessException(BaseResponseCode.PASSWORD_ERROR);
         }
-        LoginRespVO respVO = new LoginRespVO();
-        BeanUtils.copyProperties(sysUser, respVO);
+        LoginRespVO respVO = BeanConvertUtil.doConvert(sysUser,LoginRespVO.class);
+
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtConstant.JWT_PERMISSIONS_KEY, getPermissionsByUserId(sysUser.getId()));
         claims.put(JwtConstant.JWT_ROLES_KEY, getRolesByUserId(sysUser.getId()));
@@ -182,8 +178,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
         Page<SysUser> page = new Page<>(vo.getPageNumber(), vo.getPageSize());
 
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(vo, sysUser);
+        SysUser sysUser = BeanConvertUtil.doConvert(vo,SysUser.class);
         Page<SysUser> userPage = sysUserMapper.selectPage(page, Wrappers.query(sysUser));
 
 
@@ -199,8 +194,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void addUser(UserAddReqVO vo) {
-        SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(vo, sysUser);
+        SysUser sysUser = BeanConvertUtil.doConvert(vo,SysUser.class);
         sysUser.setSalt(PasswordUtil.getSalt());
         String encode = PasswordUtil.encode(vo.getPassword(), sysUser.getSalt());
         sysUser.setPassword(encode);

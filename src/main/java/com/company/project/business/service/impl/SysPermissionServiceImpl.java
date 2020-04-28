@@ -19,7 +19,9 @@ import com.company.project.framework.object.PageResult;
 import com.company.project.framework.object.ServiceImpl;
 import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysPermission;
+import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.mapper.SysPermissionMapper;
+import com.company.project.util.BeanConvertUtil;
 import com.company.project.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -82,8 +84,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      */
     @Override
     public SysPermission addPermission(PermissionAddReqVO vo) {
-        SysPermission sysPermission = new SysPermission();
-        BeanUtils.copyProperties(vo, sysPermission);
+        SysPermission sysPermission = BeanConvertUtil.doConvert(vo, SysPermission.class);
         verifyForm(sysPermission);
         sysPermission.setCreateTime(LocalDateTime.now());
         int count = sysPermissionMapper.insert(sysPermission);
@@ -176,8 +177,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        SysPermission update = new SysPermission();
-        BeanUtils.copyProperties(vo, update);
+        SysPermission update = BeanConvertUtil.doConvert(vo, SysPermission.class);
         /**
          * 只有类型变更
          * 或者所属菜单变更
@@ -259,8 +259,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public PageResult<SysPermission> pageInfo(PermissionPageReqVO vo) {
         Page<SysPermission> page = new Page<SysPermission>(vo.getPageNumber(), vo.getPageSize());
 
-        SysPermission sysPermission = new SysPermission();
-        BeanUtils.copyProperties(vo, sysPermission);
+        SysPermission sysPermission = BeanConvertUtil.doConvert(vo, SysPermission.class);
 
         Page<SysPermission> permissionPage = sysPermissionMapper.selectPage(page, Wrappers.query(sysPermission));
 
@@ -323,7 +322,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             return list;
         }
         for (SysPermission sysPermission : all) {
-            if ("0".equals(sysPermission.getPid())) {
+            if (0L==(sysPermission.getPid())) {
                 PermissionRespNode permissionRespNode = new PermissionRespNode();
                 BeanUtils.copyProperties(sysPermission, permissionRespNode);
                 permissionRespNode.setTitle(sysPermission.getName());

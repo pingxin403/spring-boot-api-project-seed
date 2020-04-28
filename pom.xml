@@ -11,6 +11,29 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <commons.lang3.varsion>3.9</commons.lang3.varsion>
+        <guava.version>28.1-jre</guava.version>
+        <hutool.version>5.0.7</hutool.version>
+        <mybatis-plus.version>3.3.0</mybatis-plus.version>
+        <fastjson.version>1.2.68</fastjson.version>
+        <druid.version>1.1.21</druid.version>
+        <velocity.version>2.0</velocity.version>
+        <shiro.version>1.4.0</shiro.version>
+        <shiro.redis.version>2.4.2.1-RELEASE</shiro.redis.version>
+        <swagger.version>2.9.2</swagger.version>
+        <knife4j.version>2.0.2</knife4j.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <java-jwt.version>3.10.0</java-jwt.version>
+        <UserAgentUtils.version>1.20</UserAgentUtils.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <!--java 网页解析工具包 Jsoup -->
+        <jsoup.version>1.10.3</jsoup.version>
+
+        <ehcache.version>3.8.1</ehcache.version>
+
+
     </properties>
 
     <dependencyManagement>
@@ -54,12 +77,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
+            <version>${commons.lang3.varsion}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.1-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -70,7 +93,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>5.0.7</version>
+            <version>${hutool.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -87,6 +110,15 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
+        <!--&lt;!&ndash;集成ehcache&ndash;&gt;-->
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.ehcache/ehcache &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>org.ehcache</groupId>-->
+        <!--<artifactId>ehcache</artifactId>-->
+        <!--<version>${ehcache.version}</version>-->
+        <!--</dependency>-->
+
+
         <!--MySQL JDBC驱动-->
         <dependency>
             <groupId>mysql</groupId>
@@ -97,31 +129,33 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.3.0</version>
+            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <!--阿里 FastJson依赖-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.68</version>
+            <version>${fastjson.version}</version>
         </dependency>
         <!--阿里 Druid Spring Boot Starter依赖-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.21</version>
+            <version>${druid.version}</version>
         </dependency>
+
         <!--代码生成器依赖-->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
-            <version>2.0</version>
+            <version>${velocity.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.3.0</version>
+            <version>${mybatis-plus.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -134,72 +168,48 @@
 
 
         <!--shiro-->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.shiro</groupId>-->
-        <!--<artifactId>shiro-spring-boot-web-starter</artifactId>-->
-        <!--<version>1.4.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.shiro</groupId>-->
-        <!--<artifactId>shiro-spring-boot-starter</artifactId>-->
-        <!--<version>1.4.0</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro.version}</version>
         </dependency>
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
-            <version>2.4.2.1-RELEASE</version>
+            <version>${shiro.redis.version}</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.shiro</groupId>-->
+        <!--<artifactId>shiro-ehcache</artifactId>-->
+        <!--<version>${shiro.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-cache</artifactId>
-            <version>1.4.0</version>
+            <version>${shiro.version}</version>
         </dependency>
 
 
-        <!-- 1. swagger-bootstrap-ui 目前改名为 knife4j -->
-        <!-- 2. 实现 swagger-bootstrap-ui 的自动化配置  -->
-        <!-- 3. 因为 knife4j-spring 已经引入 Swagger 依赖，所以无需重复引入 -->
-        <!--<dependency>-->
-        <!--<groupId>com.github.xiaoymin</groupId>-->
-        <!--<artifactId>knife4j-spring</artifactId>-->
-        <!--<version>1.9.6</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.github.xiaoymin</groupId>-->
-        <!--<artifactId>knife4j-spring-ui</artifactId>-->
-        <!--<version>1.9.6</version>-->
-        <!--</dependency>-->
+        <!--https://doc.xiaominfo.com/knife4j/-->
+        <!--knife4j-spring-boot-starter主要为我们引用的相关jar包：-->
+
+        <!--knife4j-spring:Swagger增强处理类-->
+        <!--knife4j-spring-ui:swagger的增强ui文档-->
+        <!--springfox-swagger:springfox最新2.9.2版本-->
+        <!--springfox-swagger-ui:springfox提供的ui-->
+        <!--springfox-bean-validators：springfxo验证支持组件-->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
-            <version>1.5.22</version>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.5.22</version>
-        </dependency>
+
         <!--log-->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -216,23 +226,23 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <version>${jjwt.version}</version>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.10.0</version>
+            <version>${java-jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
-            <version>1.20</version>
+            <version>${UserAgentUtils.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
+            <version>${kaptcha.version}</version>
         </dependency>
 
     </dependencies>

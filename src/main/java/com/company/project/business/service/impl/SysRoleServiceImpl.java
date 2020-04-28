@@ -18,6 +18,7 @@ import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.mapper.SysRoleMapper;
 import com.company.project.persistence.mapper.SysUserRoleMapper;
+import com.company.project.util.BeanConvertUtil;
 import com.company.project.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -62,8 +63,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public SysRole addRole(RoleAddReqVO vo) {
 
-        SysRole sysRole = new SysRole();
-        BeanUtils.copyProperties(vo, sysRole);
+        SysRole sysRole = BeanConvertUtil.doConvert(vo,SysRole.class);
         sysRole.setCreateTime(LocalDateTime.now());
         int count = sysRoleMapper.insert(sysRole);
         if (count != 1) {
@@ -87,9 +87,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        SysRole update = new SysRole();
-        BeanUtils.copyProperties(vo, update);
-//        BeanUtils.copyProperties(vo,sysRole);
+        SysRole update = BeanConvertUtil.doConvert(vo,SysRole.class);
         update.setUpdateTime(LocalDateTime.now());
         int count = sysRoleMapper.updateById(update);
         if (count != 1) {
@@ -174,8 +172,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public PageResult<SysRole> pageInfo(RolePageReqVO vo) {
         Page<SysRole> page = new Page<>(vo.getPageNumber(), vo.getPageSize());
 
-        SysRole sysRole = new SysRole();
-        BeanUtils.copyProperties(vo, sysRole);
+        SysRole sysRole = BeanConvertUtil.doConvert(vo,SysRole.class);
 
         Page<SysRole> rolePage = sysRoleMapper.selectPage(page, Wrappers.query(sysRole));
 

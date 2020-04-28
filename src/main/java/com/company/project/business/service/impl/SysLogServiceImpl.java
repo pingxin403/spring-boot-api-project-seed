@@ -16,10 +16,7 @@ import com.company.project.framework.object.ServiceImpl;
 import com.company.project.persistence.beans.SysLog;
 import com.company.project.persistence.beans.SysUser;
 import com.company.project.persistence.mapper.SysLogMapper;
-import com.company.project.util.JwtTokenUtil;
-import com.company.project.util.RequestUtil;
-import com.company.project.util.ResultUtil;
-import com.company.project.util.WebSpiderUtils;
+import com.company.project.util.*;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +36,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     public PageResult<SysLog> findPageBreakByCondition(LogVO vo) {
         Page<SysLog> page = new Page<SysLog>(vo.getPageNumber(), vo.getPageSize());
 
-        SysLog sysLog = new SysLog();
-        BeanUtils.copyProperties(vo, sysLog);
+        SysLog sysLog = BeanConvertUtil.doConvert(vo,SysLog.class);
         sysLog.setLogLevel(vo.getLogLevel());
         sysLog.setType(vo.getType());
 
