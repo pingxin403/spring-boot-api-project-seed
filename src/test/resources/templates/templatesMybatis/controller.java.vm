@@ -66,7 +66,7 @@ public class ${table.controllerName} {
         return ResultUtil.success(i${entity}Service.getById(id));
     }
 
-    @GetMapping("/")
+    @PostMapping("/list")
     @ApiOperation(value = "${table.comment}分页")
     @BussinessLog(value = "${table.comment}分页", action = "分页")
     @RequiresPermissions("sys:${table.entityPath}:list")
