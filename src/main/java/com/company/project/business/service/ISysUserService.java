@@ -21,12 +21,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     Long register(RegisterReqVO vo);
 
-    LoginRespVO login(LoginReqVO vo);
-
-
-    String refreshToken(String refreshToken, String accessToken);
-
-    void updateUserInfo(UserUpdateReqVO vo, String operationId);
+    void updateUserInfo(UserUpdateReqVO vo, Long operationId);
 
 
     PageResult<SysUser> pageInfo(UserPageReqVO vo);
@@ -36,9 +31,7 @@ public interface ISysUserService extends IService<SysUser> {
 
     void addUser(UserAddReqVO vo);
 
-    void logout(String accessToken, String refreshToken);
-
-    void updatePwd(UpdatePasswordReqVO vo, Long userId, String accessToken, String refreshToken);
+    void updatePwd(UpdatePasswordReqVO vo, Long userId);
 
     void deletedUsers(List<Long> userIds, String operationId);
 

@@ -1,17 +1,15 @@
 package com.company.project.controller;
 
 
-import cn.hutool.core.lang.Assert;
 import com.company.project.business.annotation.BussinessLog;
-import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.service.ISysUserRoleService;
 import com.company.project.business.service.ISysUserService;
 import com.company.project.business.vo.user.UserAddReqVO;
 import com.company.project.business.vo.user.UserPageReqVO;
 import com.company.project.business.vo.user.UserUpdateReqVO;
 import com.company.project.framework.object.ResponseVO;
-import com.company.project.util.JwtTokenUtil;
 import com.company.project.util.ResultUtil;
+import com.company.project.util.SessionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,9 +38,7 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "更新用户信息")
     @RequiresPermissions("sys:user:update")
     public ResponseVO updateUserInfo(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
-        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
-        Assert.notBlank(jwt);
-        String id = JwtTokenUtil.getUserId(jwt);
+        Long id = SessionUtil.getUser().getId();
         userService.updateUserInfo(vo, id);
         return ResultUtil.success("更新用户信息");
     }
@@ -52,9 +48,7 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "更新用户信息")
     @RequiresPermissions("sys:user:update")
     public ResponseVO updateUserInfoById(@RequestBody @Valid UserUpdateReqVO vo, HttpServletRequest request) {
-        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
-        Assert.notBlank(jwt);
-        String id = JwtTokenUtil.getUserId(jwt);
+        Long id = SessionUtil.getUser().getId();
         vo.setId(Long.valueOf(id));
         userService.updateUserInfo(vo, id);
         return ResultUtil.success("更新用户信息");
@@ -73,10 +67,8 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "查询用户详情")
     @RequiresPermissions("sys:user:detail")
     public ResponseVO youSelfInfo(HttpServletRequest request) {
-        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
-        Assert.notBlank(jwt);
-        String id = JwtTokenUtil.getUserId(jwt);
-        return ResultUtil.success(userService.detailInfo(Long.parseLong(id)));
+        Long id = SessionUtil.getUser().getId();
+        return ResultUtil.success(userService.detailInfo(id));
 
     }
 
@@ -102,9 +94,7 @@ public class SysUserController {
     @BussinessLog(value = "用户管理", action = "删除用户")
     @RequiresPermissions("sys:user:deleted")
     public ResponseVO deletedUser(@RequestBody @ApiParam(value = "用户id集合") List<Long> userIds, HttpServletRequest request) {
-        String jwt = request.getHeader(JwtConstant.ACCESS_TOKEN);
-        Assert.notBlank(jwt);
-        String id = JwtTokenUtil.getUserId(jwt);
+        String id = SessionUtil.getUser().getId().toString();
         userService.deletedUsers(userIds, id);
         return ResultUtil.success("删除用户");
     }

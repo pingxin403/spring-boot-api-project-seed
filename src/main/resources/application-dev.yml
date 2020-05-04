@@ -59,17 +59,10 @@ spring:
 swagger2:
   enable: true
 
-#jwt
-jwt:
-  accessTokenExpireTime: PT2H
-  issuer: hanyunpeng0521.github.io
-  refreshTokenExpireAppTime: P30D
-  refreshTokenExpireTime: PT8H
-  secretKey: 78944878877848fg)
 ################################### 程序自定义配置 ###################################
 app:
   # 是否启用kaptcha验证码
-  enableKaptcha: true
+  enableKaptcha: false
   # 启用后，项目在启动时会打印数据库（Mysql和Redis）链接信息（包含密码）
   # 代码请参考
   enabledConfigLog: true

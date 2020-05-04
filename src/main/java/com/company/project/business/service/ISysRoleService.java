@@ -22,7 +22,7 @@ public interface ISysRoleService extends IService<SysRole> {
 
     SysRole addRole(RoleAddReqVO vo);
 
-    void updateRole(RoleUpdateReqVO vo, String accessToken);
+    void updateRole(RoleUpdateReqVO vo);
 
     SysRole detailInfo(Long id);
 

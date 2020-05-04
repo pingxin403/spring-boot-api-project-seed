@@ -2,7 +2,6 @@ package com.company.project.business.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.enums.DeletedEnum;
 import com.company.project.business.enums.PermissionTypeEnum;
 import com.company.project.business.service.ISysPermissionService;
@@ -17,9 +16,7 @@ import com.company.project.framework.exception.BusinessException;
 import com.company.project.framework.exception.code.BaseResponseCode;
 import com.company.project.framework.object.PageResult;
 import com.company.project.framework.object.ServiceImpl;
-import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysPermission;
-import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.mapper.SysPermissionMapper;
 import com.company.project.util.BeanConvertUtil;
 import com.company.project.util.ResultUtil;
@@ -32,7 +29,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static com.company.project.business.enums.PermissionTypeEnum.DIRECTORY;
 import static com.company.project.business.enums.PermissionTypeEnum.MENU;
@@ -56,8 +52,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private ISysRolePermissionService rolePermissionService;
     @Autowired
     private SysPermissionMapper sysPermissionMapper;
-    @Autowired
-    private JwtProperties jwtProperties;
+
 
     /**
      * 根据用户查询拥有的权限
@@ -190,25 +185,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (count != 1) {
             throw new BusinessException(BaseResponseCode.OPERATION_ERRO);
         }
-        /**
-         * 说明这个菜单权限 权鉴标识发生变化
-         * 所有管理这个菜单权限用户将重新刷新token
-         */
-        if (StringUtils.isEmpty(vo.getPerms()) && !sysPermission.getPerms().equals(vo.getPerms())) {
-            List<Long> roleIds = rolePermissionService.getRoleIds(vo.getId());
-            if (!roleIds.isEmpty()) {
-                List<Long> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
-                if (!userIds.isEmpty()) {
-                    for (Long userId : userIds) {
-                        redisService.set(JwtConstant.JWT_REFRESH_KEY + userId, userId, jwtProperties.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-                        //清空权鉴缓存
-                        redisService.del(JwtConstant.IDENTIFY_CACHE_KEY + userId);
-                    }
-
-                }
-            }
-        }
-
     }
 
     /**
@@ -239,17 +215,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
          */
         rolePermissionService.removeByPermissionId(permissionId);
         List<Long> roleIds = rolePermissionService.getRoleIds(permissionId);
-        if (!roleIds.isEmpty()) {
-            List<Long> userIds = userRoleService.getUserIdsByRoleIds(roleIds);
-            if (!userIds.isEmpty()) {
-                for (Long userId : userIds) {
-                    redisService.set(JwtConstant.JWT_REFRESH_KEY + userId, userId, jwtProperties.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-                    //清空权鉴缓存
-                    redisService.del(JwtConstant.IDENTIFY_CACHE_KEY + userId);
-                }
-
-            }
-        }
     }
 
     /**
@@ -322,7 +287,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             return list;
         }
         for (SysPermission sysPermission : all) {
-            if (0L==(sysPermission.getPid())) {
+            if (0L == (sysPermission.getPid())) {
                 PermissionRespNode permissionRespNode = new PermissionRespNode();
                 BeanUtils.copyProperties(sysPermission, permissionRespNode);
                 permissionRespNode.setTitle(sysPermission.getName());

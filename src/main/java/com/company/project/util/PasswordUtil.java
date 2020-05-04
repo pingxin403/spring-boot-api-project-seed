@@ -1,12 +1,15 @@
 package com.company.project.util;
 
-
 import com.company.project.business.consts.ProjectConstant;
+import com.sun.deploy.association.utility.AppConstants;
 
-import java.util.UUID;
-
+/**
+ * @author hyp
+ * Project name is blog
+ * Include in com.hyp.learn.core.utils
+ * hyp create at 20-3-18
+ **/
 public class PasswordUtil {
-
     /**
      * AES 加密
      *
@@ -31,39 +34,17 @@ public class PasswordUtil {
         return AesUtil.decrypt(Md5Util.MD5(salt + ProjectConstant.APP_SECURITY_KEY), encryptPassword);
     }
 
-    /**
-     * 匹配密码
-     *
-     * @param salt    盐
-     * @param rawPass 明文
-     * @param encPass 密文
-     * @return
-     */
-    public static boolean matches(String salt, String rawPass, String encPass) {
-        return new PasswordEncoder(salt).matches(encPass, rawPass);
+
+
+    public static boolean matches(String salt, String oldPwd, String password) throws Exception {
+        return password.equals(encrypt(oldPwd,salt));
     }
 
-    /**
-     * 明文密码加密
-     *
-     * @param rawPass 明文
-     * @param salt
-     * @return
-     */
-    public static String encode(String rawPass, String salt) {
-        return new PasswordEncoder(salt).encode(rawPass);
-    }
-
-    /**
-     * 获取加密盐
-     *
-     * @return
-     */
-    public static String getSalt() {
-        return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(PasswordUtil.encode("666666", "324ce32d86224b00a02b"));
+    public static void main(String[] args) throws Exception {
+        String s = Md5Util.MD5("admin"+ ProjectConstant.APP_SECURITY_KEY);
+        String encrypt = encrypt("666666", s);
+        System.out.println(s);
+        System.out.println(encrypt);
+        System.out.println(decrypt(encrypt,s));
     }
 }

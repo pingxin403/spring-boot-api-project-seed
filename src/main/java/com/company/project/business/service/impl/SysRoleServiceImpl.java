@@ -2,7 +2,6 @@ package com.company.project.business.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.enums.DeletedEnum;
 import com.company.project.business.service.*;
 import com.company.project.business.vo.permission.PermissionRespNode;
@@ -14,14 +13,12 @@ import com.company.project.framework.exception.BusinessException;
 import com.company.project.framework.exception.code.BaseResponseCode;
 import com.company.project.framework.object.PageResult;
 import com.company.project.framework.object.ServiceImpl;
-import com.company.project.framework.property.JwtProperties;
 import com.company.project.persistence.beans.SysRole;
 import com.company.project.persistence.mapper.SysRoleMapper;
 import com.company.project.persistence.mapper.SysUserRoleMapper;
 import com.company.project.util.BeanConvertUtil;
 import com.company.project.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -53,8 +49,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private RedisService redisService;
     @Autowired
-    private JwtProperties jwtProperties;
-    @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
     @Autowired
     private ISysPermissionService permissionService;
@@ -63,7 +57,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public SysRole addRole(RoleAddReqVO vo) {
 
-        SysRole sysRole = BeanConvertUtil.doConvert(vo,SysRole.class);
+        SysRole sysRole = BeanConvertUtil.doConvert(vo, SysRole.class);
         sysRole.setCreateTime(LocalDateTime.now());
         int count = sysRoleMapper.insert(sysRole);
         if (count != 1) {
@@ -81,13 +75,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updateRole(RoleUpdateReqVO vo, String accessToken) {
+    public void updateRole(RoleUpdateReqVO vo) {
         SysRole sysRole = sysRoleMapper.selectById(vo.getId());
         if (null == sysRole) {
             log.error("传入 的 id:{}不合法", vo.getId());
             throw new BusinessException(BaseResponseCode.DATA_ERROR);
         }
-        SysRole update = BeanConvertUtil.doConvert(vo,SysRole.class);
+        SysRole update = BeanConvertUtil.doConvert(vo, SysRole.class);
         update.setUpdateTime(LocalDateTime.now());
         int count = sysRoleMapper.updateById(update);
         if (count != 1) {
@@ -101,16 +95,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             rolePermissionService.addRolePermission(reqVO);
 
             List<Long> userIds = sysUserRoleMapper.getInfoByUserIdByRoleId(vo.getId());
-
-            if (!userIds.isEmpty()) {
-                for (Long userId : userIds) {
-                    redisService.set(JwtConstant.JWT_REFRESH_KEY + userId, userId, jwtProperties.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-                    //清空权鉴缓存
-                    redisService.del(JwtConstant.IDENTIFY_CACHE_KEY + userId);
-                }
-
-            }
-
         }
 
     }
@@ -158,21 +142,13 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         rolePermissionService.removeByRoleId(id);
         userRoleService.removeByRoleId(id);
 
-        if (!userIds.isEmpty()) {
-            for (Long userId : userIds) {
-                redisService.set(JwtConstant.JWT_REFRESH_KEY + userId, userId, jwtProperties.getAccessTokenExpireTime().toMillis(), TimeUnit.MILLISECONDS);
-                //清空权鉴缓存
-                redisService.del(JwtConstant.IDENTIFY_CACHE_KEY + userId);
-            }
-
-        }
     }
 
     @Override
     public PageResult<SysRole> pageInfo(RolePageReqVO vo) {
         Page<SysRole> page = new Page<>(vo.getPageNumber(), vo.getPageSize());
 
-        SysRole sysRole = BeanConvertUtil.doConvert(vo,SysRole.class);
+        SysRole sysRole = BeanConvertUtil.doConvert(vo, SysRole.class);
 
         Page<SysRole> rolePage = sysRoleMapper.selectPage(page, Wrappers.query(sysRole));
 

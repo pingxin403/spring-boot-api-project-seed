@@ -2,7 +2,6 @@ package com.company.project.controller;
 
 
 import com.company.project.business.annotation.BussinessLog;
-import com.company.project.business.consts.JwtConstant;
 import com.company.project.business.service.IShiroService;
 import com.company.project.business.service.ISysRolePermissionService;
 import com.company.project.business.service.ISysRoleService;
@@ -84,7 +83,7 @@ public class SysRoleController {
     @BussinessLog(value = "角色管理", action = "更新角色信息")
     @RequiresPermissions("sys:role:update")
     public ResponseVO updateDept(@RequestBody @Valid RoleUpdateReqVO vo, HttpServletRequest request) {
-        roleService.updateRole(vo, request.getHeader(JwtConstant.ACCESS_TOKEN));
+        roleService.updateRole(vo);
         return ResultUtil.success("更新角色信息");
     }
 

@@ -4,7 +4,7 @@ import com.company.project.business.service.IShiroService;
 import com.company.project.business.service.ISysPermissionService;
 import com.company.project.business.service.ISysUserRoleService;
 import com.company.project.framework.holder.SpringContextHolder;
-import com.company.project.framework.shiro.realm.JwtRealm;
+import com.company.project.framework.shiro.realm.ShiroRealm;
 import com.company.project.persistence.beans.SysPermission;
 import com.company.project.persistence.beans.SysUser;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +58,7 @@ public class ShiroServiceImpl implements IShiroService {
         filterChain.put("/passport/signin", "anon");
         filterChain.put("/passport/pwd", "user");
         filterChain.put("/passport/**", "anon");
+        filterChain.put("/error", "anon");
 
         filterChain.put("/css/**", "anon");
         filterChain.put("/js/**", "anon");
@@ -75,7 +76,7 @@ public class ShiroServiceImpl implements IShiroService {
         filterChain.put("/favicon.ico", "anon");
         filterChain.put("/captcha.jpg", "anon");
         filterChain.put("/csrf", "anon");
-        filterChain.put("/**", "jwt,authc");
+        filterChain.put("/**", "user");
 
 
         // 加载数据库中配置的资源权限列表
@@ -129,10 +130,10 @@ public class ShiroServiceImpl implements IShiroService {
     @Override
     public void reloadAuthorizingByUserId(SysUser user) {
         RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        JwtRealm shiroRealm = (JwtRealm) rsm.getRealms().iterator().next();
+        ShiroRealm shiroRealm = (ShiroRealm) rsm.getRealms().iterator().next();
         Subject subject = SecurityUtils.getSubject();
         String realmName = subject.getPrincipals().getRealmNames().iterator().next();
-        SimplePrincipalCollection principals = new SimplePrincipalCollection(user, realmName);
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(user.getId(), realmName);
         subject.runAs(principals);
         shiroRealm.getAuthorizationCache().remove(subject.getPrincipals());
         subject.releaseRunAs();

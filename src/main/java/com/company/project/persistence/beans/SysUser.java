@@ -3,6 +3,7 @@ package com.company.project.persistence.beans;
 import com.company.project.business.enums.CreateWhereEnum;
 import com.company.project.business.enums.GenderEnum;
 import com.company.project.business.enums.StatusEnum;
+import com.company.project.business.enums.UserTypeEnum;
 import com.company.project.framework.object.AbstractDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -68,6 +69,8 @@ public class SysUser extends AbstractDO {
      * 性别(1.男 2.女)
      */
     private GenderEnum sex;
+
+    private String userType;
     /**
      * 创建人
      */

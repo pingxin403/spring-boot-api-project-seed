@@ -55,27 +55,6 @@ public class SwaggerConfig {
             );
         });
 
-        /**
-         * 这是为了我们在用 swagger 测试接口的时候添加头部信息
-         */
-        List<Parameter> pars = new ArrayList<Parameter>();
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        ParameterBuilder refreshTokenPar = new ParameterBuilder();
-        tokenPar.name("authorization")
-                .description("swagger测试用(模拟token传入)非必填 header")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false);
-        refreshTokenPar.name("refresh_token")
-                .description("swagger测试用(模拟刷新token传入)非必填 header")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false);
-        /**
-         * 多个的时候 就直接添加到 pars 就可以了
-         */
-        pars.add(tokenPar.build());
-        pars.add(refreshTokenPar.build());
 
         // 创建 Docket 对象
         return new Docket(DocumentationType.SWAGGER_2) // 文档类型，使用 Swagger2
@@ -93,7 +72,6 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 // 构建出 Docket 对象
                 .build()
-                .globalOperationParameters(pars)
                 .enable(enable);
     }
 
