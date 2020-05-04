@@ -12,6 +12,11 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - knife4j+swagger 2：Api文档
   文档访问位置：http://x.x.x.x:8080/doc.html
 
+默认master为token认证
+
+1. token分支：使用token认证,面向前后端分离和APP应用
+2. session分支：使用Session认证，面向网页应用
+
 
 ## 特征&提供
 - 面向前后端分离项目
