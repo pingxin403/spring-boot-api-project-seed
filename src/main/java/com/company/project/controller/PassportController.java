@@ -16,7 +16,6 @@ import com.company.project.plugin.kaptcha.Captcha;
 import com.company.project.plugin.kaptcha.GifCaptcha;
 import com.company.project.util.ResultUtil;
 import com.company.project.util.SessionUtil;
-import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -126,9 +125,6 @@ public class PassportController {
         SessionUtil.removeAllSession();
         return ResultUtil.success("更新密码");
     }
-
-    @Autowired
-    private DefaultKaptcha defaultKaptcha;
 
     /**
      * 获取验证码

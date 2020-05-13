@@ -12,6 +12,12 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - knife4j+swagger 2：Api文档
   文档访问位置：http://x.x.x.x:8080/doc.html
 
+默认master为token认证
+
+1. token分支：使用token认证,面向前后端分离和APP应用
+2. session分支：使用Session认证，面向网页应用
+
+
 
 ## 特征&提供
 - 面向前后端分离项目
@@ -22,7 +28,7 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - 常用基础方法抽象封装
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 使用FastJsonHttpMessageConverter，提高JSON序列化速度
-- 集成MyBatis、通用Mapper插件、PageHelper分页插件，实现单表业务零SQL
+- 集成MyBatis、Mybatis plus，实现单表业务零SQL
 - 提供代码生成器根据表名生成对应的Model、Mapper、MapperXML、Service、ServiceImpl、Controller等基础代码，其中Controller模板默认提供POST和RESTful两套，根据需求在```strategy.setRestControllerStyle(true)```方法中自己选择，默认使用POST模板。代码模板可根据实际项目的需求来扩展，由于每个公司业务都不太一样，所以只提供了一些比较基础、通用的模板，**主要是提供一个思路**来减少重复代码的编写，我在实际项目的使用中，其实根据公司业务的抽象编写了大量的模板。另外，使用模板也有助于保持团队代码风格的统一
 - 自定义enum转换器，数据库存储为int，controller返回为String
 - 自定义log注解，使用`com.company.project.business.annotation.BussinessLog`注解在controller方法，会自动生成http访问日志，如果选择save，则会保存道数据库
@@ -55,3 +61,6 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - Fastjson（[查看官方中文文档](https://github.com/Alibaba/fastjson/wiki/%E9%A6%96%E9%A1%B5)）
 - 其他略
 
+## TODO
+
+- https://gitee.com/elunez/eladmin
