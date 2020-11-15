@@ -2,6 +2,7 @@ package com.company.project.framework.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import com.company.project.plugin.myabtis.MySqlInjector;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ public class MybatisPlusConfigurer {
 
     /**
      * 分页
+     *
      * @return
      */
     @Bean
@@ -30,6 +32,15 @@ public class MybatisPlusConfigurer {
         // 开启 count 的 join 优化,只针对部分 left join
         paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
+    }
+
+    /**
+     * 自定义Sql注入器
+     */
+
+    @Bean
+    public MySqlInjector sqlInjector() {
+        return new MySqlInjector();
     }
 }
 

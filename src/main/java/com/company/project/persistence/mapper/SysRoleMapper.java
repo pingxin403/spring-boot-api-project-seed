@@ -2,7 +2,7 @@ package com.company.project.persistence.mapper;
 
 
 import com.company.project.persistence.beans.SysRole;
-import com.company.project.plugin.BaseMapper;
+import com.company.project.plugin.myabtis.BaseMapper;
 
 /**
  * <p>

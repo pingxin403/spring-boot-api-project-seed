@@ -1,7 +1,7 @@
 package com.company.project.persistence.mapper;
 
 import com.company.project.persistence.beans.SysPermission;
-import com.company.project.plugin.BaseMapper;
+import com.company.project.plugin.myabtis.BaseMapper;
 
 import java.util.List;
 

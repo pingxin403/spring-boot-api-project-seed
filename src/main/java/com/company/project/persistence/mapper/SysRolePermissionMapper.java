@@ -2,9 +2,7 @@ package com.company.project.persistence.mapper;
 
 
 import com.company.project.persistence.beans.SysRolePermission;
-import com.company.project.plugin.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.dao.DataAccessException;
+import com.company.project.plugin.myabtis.BaseMapper;
 
 import java.util.List;
 

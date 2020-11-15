@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 import com.company.project.framework.object.AbstractDO;
 import com.company.project.framework.object.IService;
 import com.company.project.framework.object.ServiceImpl;
-import com.company.project.plugin.BaseMapper;
+import com.company.project.plugin.myabtis.BaseMapper;
 
 import java.util.Scanner;
 
