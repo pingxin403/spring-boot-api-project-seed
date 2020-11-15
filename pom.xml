@@ -33,7 +33,9 @@
 
         <ehcache.version>3.8.1</ehcache.version>
 
-
+        <!--容器相关-->
+        <docker.image.prefix>pingxin0521</docker.image.prefix>
+        <dockerfile.version>1.4.13</dockerfile.version>
     </properties>
 
     <dependencyManagement>
@@ -267,6 +269,27 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile.version}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
