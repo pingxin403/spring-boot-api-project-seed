@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <commons.lang3.varsion>3.9</commons.lang3.varsion>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <hutool.version>5.0.7</hutool.version>
         <mybatis-plus.version>3.3.0</mybatis-plus.version>
         <fastjson.version>1.2.68</fastjson.version>
