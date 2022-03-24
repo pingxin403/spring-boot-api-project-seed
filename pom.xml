@@ -22,7 +22,7 @@
         <fastjson.version>1.2.68</fastjson.version>
         <druid.version>1.1.21</druid.version>
         <velocity.version>2.0</velocity.version>
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <shiro.redis.version>2.4.2.1-RELEASE</shiro.redis.version>
         <swagger.version>2.9.2</swagger.version>
         <knife4j.version>2.0.2</knife4j.version>
