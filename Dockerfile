@@ -1,7 +1,12 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11-jre-slim
 ARG JAR_FILE
 MAINTAINER hyp
 LABEL app=${JAR_FILE} version="1.0.0" by="hyp"
-ADD target/${JAR_FILE} /app.jar
+VOLUME /tmp
+WORKDIR /data
+COPY docker-entrypoint.sh /data/entrypoint.sh
+COPY target/*.jar /data/app.jar
+RUN chmod a+x /data/entrypoint.sh
+ENV JAVA_OPTS="-Dspring.profiles.active=test"
 EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom -Xms10m -Xmx128m","-jar","/app.jar"]
+CMD [ "sh", "/data/entrypoint.sh"]
